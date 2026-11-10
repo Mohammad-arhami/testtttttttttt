@@ -1,0 +1,2115 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+<title>Gold Deposit | سیستم سپرده طلا</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@100..900&display=swap');
+
+  :root {
+    --bg: #0a1018;
+    --bg-2: #0e1726;
+    --card: #111c2e;
+    --accent: #f5b942;
+    --accent-2: #e08e1b;
+    --accent-soft: #fcd68a;
+    --accent-glow: rgba(245, 185, 66, 0.22);
+    --text: #eaf0f7;
+    --muted: #93a4b8;
+    --border: #1e2a3d;
+    --danger: #f87171;
+    --success: #34d399;
+  }
+  * {
+    box-sizing: border-box; margin: 0; padding: 0; min-width: 0;
+    font-family: "Vazirmatn", sans-serif;
+    font-optical-sizing: auto;
+    font-weight: 400;
+    font-style: normal;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html, body {
+    margin: 0; padding: 0;
+    height: 100%; width: 100%;
+    overflow: hidden;
+    position: fixed; inset: 0;
+  }
+  body {
+    background:
+      radial-gradient(circle at 15% 10%, rgba(245,185,66,0.07), transparent 45%),
+      radial-gradient(circle at 85% 90%, rgba(224,142,27,0.06), transparent 45%),
+      var(--bg);
+    color: var(--text);
+    line-height: 1.7;
+  }
+
+  .app {
+    height: 100%; max-height: 100%;
+    display: flex; flex-direction: column;
+    padding: 16px 16px 0;
+    max-width: 1100px; margin: 0 auto;
+    gap: 12px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .app::-webkit-scrollbar { width: 8px; }
+  .app::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  header {
+    flex-shrink: 0;
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 12px; flex-wrap: wrap;
+  }
+  header h1 {
+    font-size: 1.4rem; font-weight: 700;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    display: flex; align-items: center; gap: 10px;
+  }
+  header .logo {
+    width: 34px; height: 34px; border-radius: 10px;
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    display: grid; place-items: center; font-size: 18px;
+    box-shadow: 0 0 24px var(--accent-glow);
+  }
+  .subtitle { color: var(--muted); font-size: 0.8rem; }
+
+  .card {
+    flex-shrink: 0;
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 16px;
+    box-shadow: 0 8px 30px rgba(0,0,0,0.35);
+  }
+  .card h3 {
+    margin-bottom: 10px; font-size: 0.95rem;
+    color: var(--accent); font-weight: 600;
+  }
+  .form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+    gap: 12px; align-items: end;
+  }
+  .field { display: flex; flex-direction: column; gap: 6px; }
+  .field label { font-size: 0.78rem; color: var(--muted); }
+  input, select {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    color: var(--text);
+    border-radius: 10px;
+    padding: 9px 12px;
+    font-size: 0.88rem;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    width: 100%;
+    font-family: inherit;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--accent);
+    box-shadow: 0 0 0 3px var(--accent-glow);
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator { filter: invert(0.7); }
+
+  button {
+    font-family: inherit; cursor: pointer; border: none;
+    border-radius: 10px; padding: 9px 16px;
+    font-size: 0.88rem; font-weight: 600;
+    transition: transform 0.15s, box-shadow 0.2s, background 0.2s;
+  }
+  button:active { transform: scale(0.97); }
+  .btn-primary {
+    background: linear-gradient(135deg, var(--accent), var(--accent-2));
+    color: #1a0f00;
+    box-shadow: 0 4px 20px var(--accent-glow);
+  }
+  .btn-primary:hover { box-shadow: 0 4px 28px rgba(245,185,66,0.4); }
+  .btn-ghost {
+    background: transparent; color: var(--muted);
+    border: 1px solid var(--border);
+  }
+  .btn-ghost:hover { color: var(--accent); border-color: var(--accent); }
+  .btn-sm { padding: 6px 12px; font-size: 0.76rem; border-radius: 8px; }
+  .btn-danger { background: rgba(248,113,113,0.15); color: var(--danger); border: 1px solid rgba(248,113,113,0.3); }
+  .btn-danger:hover { background: rgba(248,113,113,0.25); }
+  .btn-gold { background: rgba(245,185,66,0.12); color: var(--accent); border: 1px solid rgba(245,185,66,0.3); }
+  .btn-gold:hover { background: rgba(245,185,66,0.22); }
+
+  .btn-icon {
+    width: 30px; height: 30px; padding: 0; border-radius: 8px;
+    display: inline-grid; place-items: center;
+    font-size: 0.82rem; background: transparent;
+    color: var(--muted); border: 1px solid transparent;
+    transition: all 0.15s;
+  }
+  .btn-icon:hover {
+    color: var(--text);
+    background: rgba(255,255,255,0.05);
+    border-color: var(--border);
+  }
+  .btn-icon.edit:hover { color: var(--accent); border-color: rgba(245,185,66,0.35); }
+  .btn-icon.del:hover { color: var(--danger); border-color: rgba(248,113,113,0.35); }
+
+  .toolbar {
+    flex-shrink: 0;
+    display: flex; gap: 8px;
+    flex-wrap: wrap; align-items: center;
+  }
+  .toolbar .spacer { flex: 1; }
+
+  .search-box {
+    position: relative; flex: 1 1 200px; min-width: 150px;
+    animation: slideDown 0.2s ease;
+  }
+  @keyframes slideDown {
+    from { opacity: 0; transform: translateY(-8px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .search-box input { padding-right: 36px; padding-left: 36px; }
+  .search-box::before {
+    content: "🔍"; position: absolute; right: 12px; top: 50%;
+    transform: translateY(-50%); font-size: 0.85rem; opacity: 0.6;
+  }
+  .search-box .search-clear {
+    position: absolute; left: 8px; top: 50%;
+    transform: translateY(-50%);
+    width: 26px; height: 26px; padding: 0; border-radius: 6px;
+    background: transparent; color: var(--muted);
+    font-size: 0.85rem; cursor: pointer;
+    display: grid; place-items: center;
+  }
+  .search-box .search-clear:hover {
+    background: rgba(248,113,113,0.15); color: var(--danger);
+  }
+
+  .list-title {
+    flex-shrink: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 0.8rem; color: var(--muted);
+    padding: 0 4px;
+  }
+  .list-title strong { color: var(--accent); }
+  .list-title .count-badge {
+    background: rgba(245,185,66,0.15); color: var(--accent);
+    padding: 2px 10px; border-radius: 12px;
+    font-size: 0.72rem; font-weight: 700;
+  }
+
+  .simple-scroll {
+    flex-shrink: 0;
+    min-height: 0;
+    padding: 4px 0 20px 4px;
+    margin-left: -4px;
+    direction: rtl;
+  }
+
+  .simple-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.85rem;
+  }
+  .simple-table thead th {
+    background: var(--card);
+    color: var(--accent);
+    padding: 10px 12px;
+    text-align: right;
+    font-weight: 600;
+    font-size: 0.75rem;
+    border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    white-space: nowrap;
+  }
+  .simple-table tbody tr {
+    background: var(--card);
+    border: 1px solid var(--border);
+    cursor: pointer;
+    transition: background 0.15s;
+  }
+  .simple-table tbody tr:hover {
+    background: rgba(245,185,66,0.05);
+  }
+  .simple-table tbody tr:active {
+    background: rgba(245,185,66,0.1);
+  }
+  .simple-table tbody td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .simple-table tbody tr:last-child td { border-bottom: none; }
+  .simple-table .name-cell {
+    font-weight: 600;
+    overflow-wrap: anywhere;
+  }
+  .simple-table .phone-cell {
+    font-size: 0.75rem;
+    color: var(--muted);
+    direction: ltr;
+    text-align: right;
+  }
+  .simple-table .amount-cell {
+    font-weight: 700;
+    color: var(--accent);
+    direction: ltr;
+    text-align: left;
+    white-space: nowrap;
+  }
+  .simple-table .amount-cell small {
+    color: var(--muted);
+    font-weight: 400;
+    font-size: 0.68rem;
+  }
+  .simple-table .action-cell {
+    text-align: center;
+    width: 40px;
+    padding: 4px;
+  }
+  .simple-table .action-cell .btn-icon {
+    width: 28px; height: 28px;
+    font-size: 0.72rem;
+    display: inline-grid;
+  }
+
+  .empty-simple {
+    text-align: center; padding: 36px 20px; color: var(--muted);
+    border: 1px dashed var(--border); border-radius: 14px;
+    font-size: 0.82rem;
+  }
+  .empty-simple .icon { font-size: 2rem; margin-bottom: 6px; opacity: 0.5; }
+
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(4,8,15,0.8);
+    backdrop-filter: blur(8px);
+    display: none;
+    z-index: 100;
+    padding: 16px;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+  }
+  .modal-overlay.open { display: flex; align-items: flex-start; justify-content: center; }
+
+  .modal {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    padding: 20px;
+    width: 100%; max-width: 420px;
+    max-height: calc(100% - 32px);
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    box-shadow: 0 30px 80px rgba(0,0,0,0.7);
+    animation: pop 0.2s ease;
+    margin: auto;
+  }
+  .modal.wide { max-width: 640px; }
+  .modal.list-modal {
+    max-width: 900px;
+    display: flex; flex-direction: column;
+    padding: 20px;
+  }
+  @keyframes pop {
+    from { transform: scale(0.96) translateY(10px); opacity: 0; }
+    to { transform: scale(1) translateY(0); opacity: 1; }
+  }
+
+  .modal h3 { margin-bottom: 14px; font-size: 1.05rem; color: var(--accent); }
+  .modal .field { margin-bottom: 12px; }
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 18px; }
+
+  .list-header {
+    flex-shrink: 0;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 10px; flex-wrap: wrap;
+    padding-bottom: 12px; margin-bottom: 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  .list-header h3 { margin: 0; }
+  .list-header .actions { display: flex; gap: 6px; flex-wrap: wrap; }
+
+  .list-summary {
+    flex-shrink: 0;
+    background: linear-gradient(135deg, rgba(245,185,66,0.1), rgba(224,142,27,0.05));
+    border: 1px solid rgba(245,185,66,0.25);
+    border-radius: 12px;
+    padding: 10px 14px; margin-bottom: 12px;
+    display: flex; gap: 14px; flex-wrap: wrap;
+    font-size: 0.8rem;
+  }
+  .list-summary strong { color: var(--accent); }
+
+  .list-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    overflow-x: hidden;
+    min-height: 0;
+    padding-left: 4px;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
+    scrollbar-width: thin;
+    scrollbar-color: var(--border) transparent;
+  }
+  .list-body::-webkit-scrollbar { width: 8px; }
+  .list-body::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+
+  .empty {
+    text-align: center; padding: 40px 20px; color: var(--muted);
+    border: 1px dashed var(--border); border-radius: 14px;
+    font-size: 0.85rem;
+  }
+  .empty .icon { font-size: 2.2rem; margin-bottom: 8px; opacity: 0.5; }
+
+  .deposits-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 12px;
+  }
+  .deposit-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    position: relative; overflow: hidden;
+  }
+  .deposit-card::before {
+    content: ""; position: absolute; inset: 0 auto auto 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    opacity: 0.8;
+  }
+  .deposit-head {
+    display: flex; justify-content: space-between; align-items: flex-start;
+    margin-bottom: 10px; gap: 10px;
+  }
+  .deposit-name { font-weight: 700; font-size: 0.95rem; overflow-wrap: anywhere; }
+  .deposit-phone { color: var(--muted); font-size: 0.72rem; direction: ltr; text-align: right; overflow-wrap: anywhere; }
+
+  .card-chips { display: flex; gap: 4px; flex-wrap: wrap; justify-content: flex-end; }
+  .chip {
+    display: inline-flex; align-items: center; gap: 4px;
+    font-size: 0.65rem; padding: 2px 7px; border-radius: 20px;
+    background: rgba(255,255,255,0.03); color: var(--muted);
+    border: 1px solid var(--border);
+    white-space: nowrap;
+  }
+  .chip.days { background: rgba(52,211,153,0.08); color: var(--success); border-color: rgba(52,211,153,0.25); }
+
+  .stats { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; margin-bottom: 10px; }
+  .stat {
+    background: var(--card); border-radius: 8px; padding: 6px 9px;
+    border: 1px solid var(--border);
+  }
+  .stat-label { font-size: 0.65rem; color: var(--muted); margin-bottom: 1px; }
+  .stat-value { font-size: 0.86rem; font-weight: 700; }
+  .stat-value.accent { color: var(--accent); }
+  .stat-value.gold { color: var(--accent-soft); }
+  .stat-value.success { color: var(--success); }
+
+  .card-actions { display: flex; gap: 5px; align-items: center; }
+  .card-actions .spacer { flex: 1; }
+
+  .history {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px dashed var(--border);
+    font-size: 0.72rem; color: var(--muted);
+  }
+  .history-title { color: var(--text); margin-bottom: 4px; font-size: 0.75rem; font-weight: 600; }
+  .history-item {
+    display: grid; grid-template-columns: 1fr auto;
+    align-items: center; gap: 6px;
+    padding: 4px 0;
+    border-bottom: 1px dashed rgba(30,42,61,0.5);
+  }
+  .history-item:last-child { border-bottom: none; }
+  .history-left { display: flex; align-items: center; gap: 5px; flex-wrap: wrap; }
+  .tx-type { display: inline-block; padding: 1px 6px; border-radius: 5px; font-size: 0.62rem; }
+  .tx-type.deposit { background: rgba(52,211,153,0.15); color: var(--success); }
+  .tx-type.withdraw { background: rgba(248,113,113,0.15); color: var(--danger); }
+  .tx-amount { font-weight: 600; direction: ltr; font-size: 0.72rem; }
+  .tx-amount.deposit { color: var(--success); }
+  .tx-amount.withdraw { color: var(--danger); }
+  .tx-date {
+    font-size: 0.65rem; color: var(--muted);
+    background: rgba(255,255,255,0.03);
+    padding: 1px 6px; border-radius: 5px;
+    border: 1px solid var(--border);
+    direction: ltr; text-align: center;
+    white-space: nowrap;
+  }
+
+  .table-view { width: 100%; border-collapse: collapse; font-size: 0.8rem; }
+  .table-view thead th {
+    background: var(--bg-2); color: var(--accent);
+    padding: 8px 6px; text-align: right; font-weight: 600;
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 2;
+    white-space: nowrap;
+  }
+  .table-view tbody td {
+    padding: 8px 6px; border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+  }
+  .table-view tbody tr:hover td { background: rgba(245,185,66,0.04); }
+  .table-view .num { direction: ltr; text-align: right; font-variant-numeric: tabular-nums; }
+  .table-view .name-cell { font-weight: 600; color: var(--text); overflow-wrap: anywhere; }
+  .table-view .phone-cell { color: var(--muted); font-size: 0.72rem; direction: ltr; }
+  .table-view .profit-cell { color: var(--success); font-weight: 600; }
+  .table-view .balance-cell { color: var(--accent); font-weight: 700; }
+  .table-view .row-actions { display: flex; gap: 3px; justify-content: flex-end; }
+
+  .edit-section { border-top: 1px solid var(--border); padding-top: 12px; margin-top: 12px; }
+  .edit-section-title {
+    font-size: 0.82rem; color: var(--accent); font-weight: 600;
+    margin-bottom: 8px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 8px; flex-wrap: wrap;
+  }
+  .edit-tx-row {
+    display: grid; grid-template-columns: 1fr 1fr auto;
+    gap: 6px; align-items: end;
+    padding: 6px 0;
+    border-bottom: 1px dashed var(--border);
+  }
+  .edit-tx-row:last-child { border-bottom: none; }
+  .edit-tx-row .field { margin-bottom: 0; }
+  .edit-tx-row .btn-icon { align-self: end; margin-bottom: 2px; }
+  .edit-tx-empty { color: var(--muted); font-size: 0.78rem; text-align: center; padding: 8px; }
+  .preview-box {
+    background: linear-gradient(135deg, rgba(245,185,66,0.1), rgba(224,142,27,0.05));
+    border: 1px solid rgba(245,185,66,0.3);
+    border-radius: 10px; padding: 8px 12px;
+    margin-top: 12px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 10px; flex-wrap: wrap;
+  }
+  .preview-box .lbl { color: var(--muted); font-size: 0.78rem; }
+  .preview-box .val { color: var(--accent); font-weight: 700; font-size: 0.95rem; }
+
+  .info-modal { max-width: 420px; }
+  .info-card {
+    background: var(--bg-2);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 14px;
+    position: relative; overflow: hidden;
+  }
+  .info-card::before {
+    content: ""; position: absolute; inset: 0 auto auto 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+    opacity: 0.8;
+  }
+
+  /* جزئیات واریزها */
+  .deposit-details {
+    margin-top: 10px; padding-top: 10px;
+    border-top: 1px dashed var(--border);
+  }
+  .deposit-details-title {
+    color: var(--text); font-size: 0.75rem; font-weight: 600;
+    margin-bottom: 6px;
+  }
+  .deposit-detail-item {
+    background: rgba(245,185,66,0.04);
+    border: 1px solid rgba(245,185,66,0.15);
+    border-radius: 8px;
+    padding: 6px 9px;
+    margin-bottom: 4px;
+    font-size: 0.7rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 6px;
+    align-items: center;
+  }
+  .deposit-detail-item .lbl { color: var(--muted); font-size: 0.65rem; }
+  .deposit-detail-item .val { font-weight: 600; color: var(--accent); direction: ltr; }
+
+  /* مودال بکاپ */
+  .backup-modal {
+    max-width: 420px;
+    padding: 14px;
+  }
+  .backup-modal > div:first-child { margin-bottom: 10px !important; }
+  .backup-modal h3 { font-size: 0.9rem !important; }
+  .backup-modal .section {
+    border-top: 1px solid var(--border);
+    padding-top: 8px; margin-top: 8px;
+  }
+  .backup-modal .section:first-of-type {
+    border-top: none; padding-top: 0; margin-top: 0;
+  }
+  .backup-modal .section-title {
+    font-size: 0.74rem; color: var(--accent); font-weight: 600;
+    margin-bottom: 5px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 6px; flex-wrap: wrap;
+  }
+  .backup-modal .section p {
+    color: var(--muted); font-size: 0.68rem; margin-bottom: 6px; line-height: 1.4;
+  }
+  .backup-modal .section button {
+    padding: 6px 10px; font-size: 0.74rem;
+  }
+  .auto-backup-list {
+    display: flex; flex-direction: column; gap: 4px;
+    max-height: 140px; overflow-y: auto;
+    scrollbar-width: thin; scrollbar-color: var(--border) transparent;
+    padding-left: 2px;
+  }
+  .auto-backup-list::-webkit-scrollbar { width: 5px; }
+  .auto-backup-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+  .auto-backup-item {
+    background: var(--bg-2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 5px 9px;
+    display: flex; justify-content: space-between; align-items: center;
+    gap: 6px;
+  }
+  .auto-backup-item .info {
+    display: flex; flex-direction: column; gap: 0; min-width: 0;
+  }
+  .auto-backup-item .date {
+    font-size: 0.7rem; font-weight: 600; color: var(--text);
+  }
+  .auto-backup-item .count {
+    font-size: 0.62rem; color: var(--muted);
+  }
+  .auto-backup-item .actions button {
+    padding: 3px 8px; font-size: 0.68rem; border-radius: 6px;
+  }
+  .auto-backup-empty {
+    color: var(--muted); font-size: 0.7rem;
+    text-align: center; padding: 10px;
+  }
+  .backup-modal .modal-actions { margin-top: 10px; }
+  .backup-modal .modal-actions button {
+    padding: 6px 14px; font-size: 0.74rem;
+  }
+
+  .alarm-container {
+    position: fixed;
+    top: 16px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 300;
+    width: 100%; max-width: 480px;
+    padding: 0 16px;
+    pointer-events: none;
+    display: flex; flex-direction: column; gap: 10px;
+  }
+  .alarm {
+    background: linear-gradient(135deg, #16243a, #111c2e);
+    border: 1px solid rgba(245,185,66,0.4);
+    border-radius: 16px;
+    padding: 14px 16px;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.6), 0 0 0 1px rgba(245,185,66,0.1);
+    pointer-events: auto;
+    position: relative; overflow: hidden;
+    animation: alarmIn 0.4s cubic-bezier(0.2, 0.8, 0.3, 1.2);
+  }
+  .alarm.out { animation: alarmOut 0.3s ease forwards; }
+  @keyframes alarmIn {
+    from { transform: translateY(-30px) scale(0.95); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+  @keyframes alarmOut {
+    from { transform: translateY(0) scale(1); opacity: 1; }
+    to { transform: translateY(-30px) scale(0.95); opacity: 0; }
+  }
+  .alarm::before {
+    content: ""; position: absolute; inset: 0 auto auto 0;
+    width: 100%; height: 3px;
+    background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  }
+  .alarm-head { display: flex; align-items: center; gap: 10px; margin-bottom: 10px; }
+  .alarm-icon {
+    width: 38px; height: 38px; border-radius: 10px;
+    background: rgba(52,211,153,0.15); color: var(--success);
+    display: grid; place-items: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .alarm-icon.gold { background: rgba(245,185,66,0.15); color: var(--accent); }
+  .alarm-icon.danger { background: rgba(248,113,113,0.15); color: var(--danger); }
+  .alarm-title { font-weight: 700; font-size: 0.92rem; color: var(--text); }
+  .alarm-sub { font-size: 0.75rem; color: var(--muted); margin-top: 1px; }
+  .alarm-close {
+    background: transparent; color: var(--muted);
+    border: none; padding: 4px; border-radius: 6px;
+    font-size: 1rem; line-height: 1;
+    cursor: pointer; margin-right: auto;
+    transition: all 0.15s;
+  }
+  .alarm-close:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+  .alarm-body {
+    background: rgba(0,0,0,0.25);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 10px 12px; font-size: 0.8rem;
+    display: grid; gap: 6px;
+  }
+  .alarm-row { display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .alarm-row .lbl { color: var(--muted); font-size: 0.75rem; }
+  .alarm-row .val { font-weight: 600; color: var(--text); }
+  .alarm-row .val.accent { color: var(--accent); }
+  .alarm-row .val.success { color: var(--success); }
+  .alarm-progress {
+    position: absolute; bottom: 0; right: 0;
+    height: 2px; background: var(--accent);
+    animation: alarmProgress 5s linear forwards;
+  }
+  @keyframes alarmProgress { from { width: 100%; } to { width: 0%; } }
+
+  @media (max-width: 900px) {
+    .app { padding: 12px 12px 0; gap: 10px; }
+    .deposits-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+    .form-grid { grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); }
+  }
+
+  @media (min-width: 381px) and (max-width: 640px) {
+    .app { padding: 10px 10px 0; gap: 8px; }
+    header h1 { font-size: 1.15rem; }
+    header .logo { width: 30px; height: 30px; font-size: 16px; }
+    .subtitle { font-size: 0.72rem; }
+    .card { padding: 12px; border-radius: 14px; }
+    .card h3 { font-size: 0.88rem; margin-bottom: 8px; }
+    .form-grid { grid-template-columns: 1fr 1fr; gap: 8px; }
+    .form-grid .field:last-child { grid-column: 1 / -1; }
+    .form-grid .field:last-child button { width: 100%; padding: 11px; }
+    input, select { padding: 8px 10px; font-size: 0.82rem; }
+
+    .toolbar { gap: 6px; }
+    .toolbar > button { flex: 1 1 auto; padding: 7px 10px; font-size: 0.72rem; }
+    .search-box { flex-basis: 100%; min-width: 0; }
+
+    .simple-table thead th { padding: 8px 10px; font-size: 0.7rem; }
+    .simple-table tbody td { padding: 8px 10px; font-size: 0.8rem; }
+    .simple-table .phone-cell { font-size: 0.7rem; }
+    .simple-table .amount-cell { font-size: 0.82rem; }
+
+    .modal-overlay { padding: 8px; }
+    .modal.list-modal { padding: 14px; max-height: calc(100% - 16px); }
+    .list-header h3 { font-size: 0.92rem; }
+    .list-summary { font-size: 0.72rem; gap: 10px; padding: 8px 12px; }
+    .list-summary span { flex: 1 1 45%; }
+
+    .deposits-grid { grid-template-columns: 1fr; gap: 10px; }
+    .deposit-card { padding: 12px; }
+    .stat { padding: 6px 8px; }
+    .stat-value { font-size: 0.82rem; }
+    .btn-gold.btn-sm { padding: 5px 9px; font-size: 0.7rem; }
+    .btn-icon { width: 28px; height: 28px; font-size: 0.76rem; }
+
+    .modal { padding: 16px; max-height: calc(100% - 16px); }
+    .modal-actions { flex-direction: column-reverse; }
+    .modal-actions button { width: 100%; }
+    .edit-tx-row { grid-template-columns: 1fr 1fr; }
+    .edit-tx-row .btn-icon { grid-column: 1 / -1; justify-self: end; }
+
+    .table-view thead { display: none; }
+    .table-view, .table-view tbody, .table-view tr, .table-view td { display: block; width: 100%; }
+    .table-view tr {
+      background: var(--bg-2); border: 1px solid var(--border);
+      border-radius: 10px; padding: 8px; margin-bottom: 6px;
+    }
+    .table-view td {
+      padding: 2px 0; border: none;
+      display: flex; justify-content: space-between; gap: 8px;
+    }
+    .table-view td::before {
+      content: attr(data-label);
+      color: var(--muted); font-size: 0.7rem; font-weight: 400;
+    }
+    .table-view td.num { text-align: left; }
+    .table-view .row-actions { justify-content: flex-start; }
+
+    .alarm-container { padding: 0 10px; top: 10px; }
+    .alarm { padding: 12px 14px; }
+  }
+
+  @media (max-width: 380px) {
+    .app { padding: 6px 6px 0; gap: 5px; }
+    header { gap: 3px; align-items: center; }
+    header h1 { font-size: 0.85rem; gap: 4px; }
+    header .logo { width: 22px; height: 22px; font-size: 11px; border-radius: 6px; }
+    .subtitle { display: none; }
+
+    .card { padding: 7px; border-radius: 10px; }
+    .card h3 { font-size: 0.72rem; margin-bottom: 5px; }
+    .form-grid { grid-template-columns: 1fr; gap: 4px; }
+    .field label { font-size: 0.6rem; }
+    input, select { padding: 5px 7px; font-size: 0.68rem; border-radius: 6px; }
+    .form-grid .field:last-child button { width: 100%; padding: 8px; font-size: 0.7rem; }
+
+    .toolbar { gap: 3px; }
+    .toolbar > button { font-size: 0.58rem; padding: 4px 6px; border-radius: 5px; }
+    .search-box input { padding: 5px 7px; padding-right: 28px; padding-left: 28px; font-size: 0.68rem; }
+    .search-box::before { right: 8px; font-size: 0.65rem; }
+    .search-box .search-clear { left: 4px; width: 20px; height: 20px; font-size: 0.65rem; }
+
+    .list-title { font-size: 0.66rem; padding: 0 2px; }
+    .list-title .count-badge { font-size: 0.6rem; padding: 1px 7px; }
+
+    .simple-table thead th { padding: 4px 5px; font-size: 0.54rem; }
+    .simple-table tbody td { padding: 4px 5px; font-size: 0.62rem; }
+    .simple-table .phone-cell { font-size: 0.55rem; }
+    .simple-table .amount-cell { font-size: 0.64rem; }
+    .simple-table .amount-cell small { font-size: 0.52rem; }
+    .simple-table .action-cell { width: 30px; padding: 2px; }
+    .simple-table .action-cell .btn-icon { width: 22px; height: 22px; font-size: 0.6rem; }
+
+    .modal.list-modal { padding: 7px; border-radius: 11px; }
+    .list-header h3 { font-size: 0.72rem; }
+    .list-header .actions button { font-size: 0.58rem; padding: 3px 6px; }
+    .list-summary { font-size: 0.58rem; padding: 4px 7px; gap: 8px; }
+    .list-summary span { flex: 1 1 100%; }
+
+    .deposit-card { padding: 7px; }
+    .deposit-name { font-size: 0.72rem; }
+    .deposit-phone { font-size: 0.58rem; }
+    .chip { font-size: 0.52rem; padding: 1px 4px; }
+    .stats { gap: 3px; }
+    .stat { padding: 3px 5px; border-radius: 5px; }
+    .stat-label { font-size: 0.5rem; }
+    .stat-value { font-size: 0.64rem; }
+    .btn-gold.btn-sm { padding: 2px 5px; font-size: 0.55rem; }
+    .btn-icon { width: 22px; height: 22px; font-size: 0.6rem; }
+    .tx-type { font-size: 0.5rem; padding: 0 3px; }
+    .tx-amount { font-size: 0.58rem; }
+    .tx-date { font-size: 0.5rem; padding: 0 3px; }
+
+    .modal { padding: 9px; border-radius: 11px; }
+    .modal h3 { font-size: 0.74rem; }
+    .edit-tx-row { grid-template-columns: 1fr; gap: 3px; }
+
+    .alarm { padding: 7px 9px; }
+    .alarm-icon { width: 28px; height: 28px; font-size: 0.85rem; }
+    .alarm-title { font-size: 0.72rem; }
+    .alarm-sub { font-size: 0.62rem; }
+    .alarm-body { font-size: 0.6rem; padding: 5px 7px; gap: 3px; }
+
+    .backup-modal { padding: 10px; }
+    .backup-modal h3 { font-size: 0.8rem !important; }
+    .backup-modal .section-title { font-size: 0.66rem; }
+    .backup-modal .section p { font-size: 0.6rem; }
+    .backup-modal .section button { padding: 5px 8px; font-size: 0.66rem; }
+    .auto-backup-list { max-height: 110px; }
+    .auto-backup-item { padding: 4px 7px; }
+    .auto-backup-item .date { font-size: 0.62rem; }
+    .auto-backup-item .count { font-size: 0.55rem; }
+    .auto-backup-item .actions button { padding: 2px 6px; font-size: 0.6rem; }
+  }
+
+  @media print {
+    html, body { position: static; overflow: visible; height: auto; background: white; color: black; }
+    .app { height: auto; max-height: none; padding: 0; overflow: visible; }
+    .toolbar, .card, .card-actions, .btn-icon, .btn-gold, .btn-ghost, .btn-primary,
+    .alarm-container, .list-title, .search-box, header { display: none !important; }
+    .modal-overlay { position: static; background: white; padding: 0; display: block !important; }
+    .modal.list-modal {
+      box-shadow: none; background: white; color: black;
+      border: none; max-width: 100%; max-height: none; padding: 0;
+    }
+    .list-header .actions { display: none; }
+    .list-header h3 { color: black; }
+    .list-body { overflow: visible; }
+    .deposit-card, .stat, .info-card { background: white !important; color: black !important; border-color: #ccc !important; }
+    .deposit-name, .stat-value, .stat-value.accent, .stat-value.success, .stat-value.gold { color: black !important; }
+    .chip { background: #eee !important; color: #333 !important; border-color: #ccc !important; }
+    .history { border-color: #ccc !important; }
+    .history-item { border-color: #eee !important; }
+    .tx-amount, .tx-date, .tx-type { color: #333 !important; background: #eee !important; }
+    .table-view thead th { background: #eee !important; color: black !important; position: static; }
+    .table-view tbody td { border-color: #ccc !important; }
+
+    .simple-scroll { padding: 0; margin: 0; }
+    .simple-table thead th { background: #eee !important; color: black !important; position: static; }
+    .simple-table tbody td { border-color: #ccc !important; color: black !important; background: white !important; }
+    .simple-table .action-cell { display: none !important; }
+  }
+</style>
+</head>
+<body>
+
+<div class="app">
+
+  <header>
+    <h1><span class="logo">🪙</span> Gold Deposit</h1>
+    <div class="subtitle">سود ۷٪ ماهانه — محاسبه روزشمار</div>
+  </header>
+
+  <div class="card">
+    <h3>➕ ثبت واریز جدید</h3>
+    <form id="depositForm" class="form-grid" autocomplete="off">
+      <div class="field">
+        <label>نام کاربر</label>
+        <input id="inpName" type="text" placeholder="مثلاً علی رضایی" />
+      </div>
+      <div class="field">
+        <label>شماره تماس</label>
+        <input id="inpPhone" type="text" placeholder="0912..."  required/>
+      </div>
+      <div class="field">
+        <label>وزن واریز (گرم)</label>
+        <input id="inpWeight" type="number" step="0.001" min="0.001" placeholder="10" />
+      </div>
+      <div class="field">
+        <label>تاریخ واریز</label>
+        <input id="inpDate" type="date" />
+      </div>
+      <div class="field">
+        <button type="submit" class="btn-primary">ثبت واریز</button>
+      </div>
+    </form>
+  </div>
+
+  <div class="toolbar">
+    <button class="btn-ghost btn-sm" id="searchToggleBtn">🔍 جستجو</button>
+    <div class="search-box" id="searchBox" style="display:none">
+      <input id="searchInput" placeholder="تایپ کنید..." />
+      <button class="search-clear" id="searchClearBtn" type="button" title="پاک کردن">✖</button>
+    </div>
+    <button class="btn-gold btn-sm" id="openListBtn">👥 لیست کامل</button>
+    <button class="btn-ghost btn-sm" id="printBtn">🖨 چاپ</button>
+    <button class="btn-ghost btn-sm" id="backupBtn">💾 بکاپ</button>
+    <button class="btn-ghost btn-sm" id="restoreBtn">📥 بازیابی</button>
+    <button class="btn-danger btn-sm" id="clearAllBtn">🗑 پاک کردن همه</button>
+    <input type="file" id="restoreFile" accept=".json,application/json" style="display:none" />
+  </div>
+
+  <div class="list-title">
+    <span>لیست کاربران <strong id="simpleTotal">—</strong></span>
+    <span class="count-badge" id="userCount">0</span>
+  </div>
+
+  <div class="simple-scroll" id="simpleList"></div>
+
+</div>
+
+<!-- مودال لیست کامل کاربران -->
+<div class="modal-overlay" id="listModal">
+  <div class="modal list-modal">
+    <div class="list-header">
+      <h3>📋 لیست کامل کاربران</h3>
+      <div class="actions">
+        <button class="btn-gold btn-sm" id="viewToggleBtn">📋 نمای جدول</button>
+        <button class="btn-ghost btn-sm" onclick="closeModal('listModal')">✖ بستن</button>
+      </div>
+    </div>
+    <div class="list-summary" id="listSummary"></div>
+    <div class="list-body">
+      <div id="depositsContainer"></div>
+    </div>
+  </div>
+</div>
+
+<!-- مودال اطلاعات واریز -->
+<div class="modal-overlay" id="infoModal">
+  <div class="modal info-modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:12px">
+      <h3 style="margin:0;font-size:0.98rem">📊 اطلاعات کاربر</h3>
+      <button class="btn-ghost btn-sm" onclick="closeModal('infoModal')">✖</button>
+    </div>
+    <input type="hidden" id="infoUserId" />
+    <div id="infoContent"></div>
+  </div>
+</div>
+
+<!-- مودال برداشت / واریز -->
+<div class="modal-overlay" id="withdrawModal">
+  <div class="modal" style="max-width:420px">
+    <h3 id="txModalTitle">📤 ثبت برداشت</h3>
+    <input type="hidden" id="withdrawId" />
+    <div class="field">
+      <label>مقدار (گرم)</label>
+      <input type="number" step="0.001" min="0.001" id="withdrawAmount" placeholder="مثلاً 2" />
+    </div>
+    <div class="field">
+      <label>تاریخ</label>
+      <input type="date" id="withdrawDate" />
+    </div>
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('withdrawModal')">انصراف</button>
+      <button class="btn-primary" id="withdrawSubmit">ثبت برداشت</button>
+    </div>
+  </div>
+</div>
+
+<!-- مودال ویرایش کامل -->
+<div class="modal-overlay" id="editModal">
+  <div class="modal wide">
+    <h3>✏️ ویرایش کامل کاربر</h3>
+    <input type="hidden" id="editId" />
+
+    <div class="form-grid" style="grid-template-columns:1fr 1fr">
+      <div class="field">
+        <label>نام کاربر</label>
+        <input id="editName" />
+      </div>
+      <div class="field">
+        <label>شماره تماس</label>
+        <input id="editPhone" />
+      </div>
+    </div>
+
+    <div class="edit-section">
+      <div class="edit-section-title">
+        <span>📊 تراکنش‌ها</span>
+        <button class="btn-gold btn-sm" id="addTxBtn" type="button">➕ افزودن تراکنش</button>
+      </div>
+      <div id="editTxList"></div>
+    </div>
+
+    <div class="preview-box">
+      <span class="lbl">موجودی محاسبه‌شده:</span>
+      <span class="val" id="editPreview">—</span>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('editModal')">انصراف</button>
+      <button class="btn-primary" id="editSubmit">ذخیره تغییرات</button>
+    </div>
+  </div>
+</div>
+
+<!-- مودال بکاپ و بازیابی -->
+<div class="modal-overlay" id="backupModal">
+  <div class="modal backup-modal">
+    <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+      <h3 style="margin:0;font-size:0.9rem">💾 بکاپ و بازیابی</h3>
+      <button class="btn-ghost btn-sm" onclick="closeModal('backupModal')">✖</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📤 بکاپ دستی</div>
+      <p>یک فایل JSON از همه داده‌ها دانلود کنید.</p>
+      <button class="btn-primary" id="downloadBackupBtn" style="width:100%">💾 دانلود فایل بکاپ</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">📥 بازیابی از فایل</div>
+      <p>فایل JSON بکاپ را انتخاب کنید. داده‌های فعلی جایگزین می‌شوند.</p>
+      <button class="btn-gold" id="uploadBackupBtn" style="width:100%">📥 انتخاب فایل بکاپ</button>
+    </div>
+
+    <div class="section">
+      <div class="section-title">
+        <span>🕐 بکاپ‌های خودکار</span>
+        <div style="display:flex;gap:6px;align-items:center">
+          <span style="font-size:0.7rem;color:var(--muted);font-weight:400">۳ نسخه آخر</span>
+          <button class="btn-danger btn-sm" id="clearBackupsBtn" style="padding:3px 8px;font-size:0.7rem">🗑 پاک کردن</button>
+        </div>
+      </div>
+      <div id="autoBackupList" class="auto-backup-list"></div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn-ghost" onclick="closeModal('backupModal')">بستن</button>
+    </div>
+  </div>
+</div>
+
+<div class="alarm-container" id="alarmContainer"></div>
+
+<script>
+/* ============================================================
+   1) لایه داده
+   ============================================================ */
+const DataStore = (() => {
+  const KEY = "goldDeposits_v4";
+  function readAll() {
+    const raw = localStorage.getItem(KEY);
+    if (!raw) return [];
+    try { const p = JSON.parse(raw); return Array.isArray(p) ? p : []; }
+    catch (e) { console.error(e); return []; }
+  }
+  function writeAll(list) { localStorage.setItem(KEY, JSON.stringify(list)); }
+  return {
+    getAll: readAll,
+    add(user) {
+      const list = readAll();
+      user.id = Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+      if (!user.transactions) user.transactions = [];
+      list.push(user);
+      writeAll(list);
+      return user;
+    },
+    update(id, patch) {
+      writeAll(readAll().map(d => d.id === id ? Object.assign({}, d, patch) : d));
+    },
+    remove(id) { writeAll(readAll().filter(d => d.id !== id)); },
+    addTransaction(id, tx) {
+      writeAll(readAll().map(d => {
+        if (d.id === id) d.transactions = (d.transactions || []).concat([tx]);
+        return d;
+      }));
+    },
+    findByNameAndPhone(name, phone) {
+      const n = (name || "").trim();
+      const p = (phone || "").trim();
+      return readAll().find(d => {
+        if (d.name !== n) return false;
+        if (p && d.phone && d.phone !== p) return false;
+        return true;
+      });
+    },
+    clear() { localStorage.removeItem(KEY); }
+  };
+})();
+
+/* ============================================================
+   2) منطق محاسبه سود — سود جداگانه روی هر واریز + FIFO برداشت
+   ------------------------------------------------------------
+   نرخ روزانه = 7% ÷ 30 = 0.002333...
+   هر واریز از تاریخ خودش سود می‌گیرد.
+   برداشت از قدیمی‌ترین واریز (FIFO) کم می‌شود، ولی سود انباشته
+   تا تاریخ برداشت روی آن قسمت هم پرداخت شده و حفظ می‌شود.
+   ============================================================ */
+const MONTHLY_RATE = 0.07;
+const DAYS_IN_MONTH = 30;
+const DAY_RATE = MONTHLY_RATE / DAYS_IN_MONTH;
+
+function toDayStart(d) {
+  const x = new Date(d); x.setHours(0,0,0,0); return x;
+}
+function daysBetween(from, to) {
+  const MS = 1000 * 60 * 60 * 24;
+  return Math.max(0, Math.round((toDayStart(to) - toDayStart(from)) / MS));
+}
+
+function calculateDetailedBalance(user, today) {
+  today = today || new Date();
+  const end = toDayStart(today);
+
+  const txs = (user.transactions || [])
+    .map(t => ({
+      type: t.type,
+      amount: Number(t.amount) || 0,
+      date: toDayStart(t.date)
+    }))
+    .filter(t => t.amount > 0)
+    .sort((a, b) => a.date - b.date);
+
+  // صف FIFO واریزها
+  // هر آیتم: { originalAmount, originalRemaining, currentValue, depositDate, lastUpdate }
+  const deposits = [];
+  let totalDeposit = 0;
+  let totalWithdraw = 0;
+
+  // تابع کمکی: اعمال سود یک واریز تا یک تاریخ مشخص
+  function applyInterestTo(dep, toDate) {
+    const days = daysBetween(dep.lastUpdate, toDate);
+    if (days > 0 && dep.currentValue > 0) {
+      // dep.currentValue *= Math.pow(1 + DAY_RATE, days);     // سود مرکب
+      dep.currentValue += dep.currentValue * DAY_RATE * days; // سود ساده (دقیقاً 7% در 30 روز)
+      dep.lastUpdate = new Date(toDate);
+    }
+  }
+
+  for (const t of txs) {
+    if (t.type === "deposit") {
+      // سود همه واریزهای موجود را تا این تاریخ (روز واریز جدید) اعمال کن
+      // (هیچ سودی روی واریز جدید تعلق نمی‌گیرد چون روز ۰ است)
+      for (const d of deposits) applyInterestTo(d, t.date);
+
+      deposits.push({
+        originalAmount: t.amount,
+        originalRemaining: t.amount,
+        currentValue: t.amount,
+        depositDate: new Date(t.date),
+        lastUpdate: new Date(t.date)
+      });
+      totalDeposit += t.amount;
+
+    } else if (t.type === "withdraw") {
+      // سود همه واریزها را تا تاریخ برداشت اعمال کن
+      for (const d of deposits) applyInterestTo(d, t.date);
+
+      // از قدیمی‌ترین واریز کم کن (FIFO)
+      let remaining = t.amount;
+      for (const d of deposits) {
+        if (remaining <= 0) break;
+        if (d.currentValue <= 0) continue;
+
+        const takeValue = Math.min(d.currentValue, remaining);
+        // نسبت اصل به ارزش فعلی برای حفظ تناسب
+        const ratio = d.currentValue > 0 ? (d.originalRemaining / d.currentValue) : 0;
+        const takePrincipal = takeValue * ratio;
+
+        d.currentValue -= takeValue;
+        d.originalRemaining = Math.max(0, d.originalRemaining - takePrincipal);
+        remaining -= takeValue;
+      }
+      totalWithdraw += t.amount;
+    }
+  }
+
+  // سود نهایی تا امروز
+  for (const d of deposits) applyInterestTo(d, end);
+
+  // جزئیات و جمع‌بندی
+  const details = [];
+  let balance = 0;
+  let principal = 0;
+
+  for (const d of deposits) {
+    if (d.currentValue <= 0.0000001) continue;
+
+    const depositProfit = d.currentValue - d.originalRemaining;
+
+    details.push({
+      depositDate: d.depositDate,
+      originalAmount: Math.round(d.originalAmount * 1000) / 1000,
+      remainingPrincipal: Math.round(d.originalRemaining * 1000) / 1000,
+      currentValue: Math.round(d.currentValue * 1000) / 1000,
+      profit: Math.round(depositProfit * 1000) / 1000,
+      daysActive: daysBetween(d.depositDate, end)
+    });
+
+    balance += d.currentValue;
+    principal += d.originalRemaining;
+  }
+
+  return {
+    balance: Math.round(balance * 1000) / 1000,
+    principal: Math.round(principal * 1000) / 1000,
+    profit: Math.round((balance - principal) * 1000) / 1000,
+    totalDeposit: Math.round(totalDeposit * 1000) / 1000,
+    totalWithdraw: Math.round(totalWithdraw * 1000) / 1000,
+    details
+  };
+}
+
+function calculateBalance(user, today) {
+  return calculateDetailedBalance(user, today).balance;
+}
+
+function calcDaysActive(user, today) {
+  today = today || new Date();
+  const txs = (user.transactions || []);
+  if (txs.length === 0) return 0;
+  const first = txs.reduce((min, t) => {
+    const d = toDayStart(t.date); return d < min ? d : min;
+  }, toDayStart(txs[0].date));
+  return Math.max(0, daysBetween(first, today));
+}
+
+/* ============================================================
+   3) اعلان
+   ============================================================ */
+function showAlarm(opts) {
+  const container = document.getElementById("alarmContainer");
+  const alarm = document.createElement("div");
+  alarm.className = "alarm";
+  const iconClass = opts.iconClass || "";
+  const title = opts.title || "اعلان";
+  const subtitle = opts.subtitle || "";
+  const rows = opts.rows || [];
+  let rowsHtml = "";
+  if (rows.length) {
+    rowsHtml = '<div class="alarm-body">' + rows.map(r =>
+      '<div class="alarm-row"><span class="lbl">' + r.lbl + '</span>' +
+      '<span class="val ' + (r.cls || "") + '">' + r.val + '</span></div>'
+    ).join("") + '</div>';
+  }
+  alarm.innerHTML =
+    '<div class="alarm-head">' +
+      '<div class="alarm-icon ' + iconClass + '">' + (opts.icon || "✅") + '</div>' +
+      '<div style="flex:1">' +
+        '<div class="alarm-title">' + title + '</div>' +
+        (subtitle ? '<div class="alarm-sub">' + subtitle + '</div>' : '') +
+      '</div>' +
+      '<button class="alarm-close" title="بستن">✖</button>' +
+    '</div>' + rowsHtml +
+    '<div class="alarm-progress"></div>';
+
+  container.appendChild(alarm);
+  const close = () => {
+    if (alarm.classList.contains("out")) return;
+    alarm.classList.add("out");
+    setTimeout(() => alarm.remove(), 300);
+  };
+  alarm.querySelector(".alarm-close").addEventListener("click", close);
+  setTimeout(close, opts.timeout || 5000);
+}
+
+/* ============================================================
+   4) لیست ساده — جدول
+   ============================================================ */
+const simpleList = document.getElementById("simpleList");
+const simpleTotal = document.getElementById("simpleTotal");
+const userCountEl = document.getElementById("userCount");
+const searchInput = document.getElementById("searchInput");
+const searchBox = document.getElementById("searchBox");
+const searchToggleBtn = document.getElementById("searchToggleBtn");
+const searchClearBtn = document.getElementById("searchClearBtn");
+const printBtn = document.getElementById("printBtn");
+const openListBtn = document.getElementById("openListBtn");
+let currentFilter = "";
+
+function getFilteredList() {
+  let list = DataStore.getAll();
+  if (currentFilter.trim()) {
+    const q = currentFilter.trim();
+    list = list.filter(d =>
+      (d.name || "").indexOf(q) !== -1 || (d.phone || "").indexOf(q) !== -1
+    );
+  }
+  list.sort((a, b) => {
+    const aF = (a.transactions || []).length ? new Date(a.transactions[0].date) : new Date(a.startDate || 0);
+    const bF = (b.transactions || []).length ? new Date(b.transactions[0].date) : new Date(b.startDate || 0);
+    return bF - aF;
+  });
+  return list;
+}
+
+function renderSimple() {
+  const all = DataStore.getAll();
+  userCountEl.textContent = all.length.toLocaleString("fa-IR");
+
+  const list = getFilteredList();
+
+  if (all.length === 0) {
+    simpleList.innerHTML = '<div class="empty-simple"><div class="icon">🪙</div><div>هنوز کاربری ثبت نشده است</div></div>';
+    simpleTotal.textContent = "—";
+    return;
+  }
+
+  if (list.length === 0) {
+    simpleList.innerHTML = '<div class="empty-simple"><div class="icon">🔍</div><div>نتیجه‌ای پیدا نشد</div></div>';
+    simpleTotal.textContent = "—";
+    return;
+  }
+
+  let total = 0;
+  const rows = list.map(u => {
+    const bal = calculateBalance(u);
+    total += bal;
+    return '<tr data-id="' + u.id + '">' +
+      '<td class="name-cell">' + escapeHtml(u.name) + '</td>' +
+      '<td class="phone-cell">' + escapeHtml(u.phone || "—") + '</td>' +
+      '<td class="amount-cell">' + fmt(bal) + ' <small>گرم</small></td>' +
+      '<td class="action-cell">' +
+        '<button class="btn-icon del" data-delete-id="' + u.id + '" title="حذف">🗑</button>' +
+      '</td>' +
+    '</tr>';
+  }).join("");
+
+  simpleList.innerHTML =
+    '<table class="simple-table">' +
+      '<thead><tr>' +
+        '<th>نام</th>' +
+        '<th>شماره تلفن</th>' +
+        '<th style="text-align:left">موجودی کل</th>' +
+        '<th style="width:40px"></th>' +
+      '</tr></thead>' +
+      '<tbody>' + rows + '</tbody>' +
+    '</table>';
+
+  simpleTotal.textContent = "موجودی کل: " + fmt(total) + " گرم";
+}
+
+simpleList.addEventListener("click", function (e) {
+  const delBtn = e.target.closest("button[data-delete-id]");
+  if (delBtn) {
+    e.stopPropagation();
+    const id = delBtn.getAttribute("data-delete-id");
+    if (id) removeDeposit(id);
+    return;
+  }
+  const row = e.target.closest("tr[data-id]");
+  if (!row) return;
+  const id = row.getAttribute("data-id");
+  if (id) openInfo(id);
+});
+
+/* ============================================================
+   5) لیست کامل در مودال
+   ============================================================ */
+const container = document.getElementById("depositsContainer");
+const summaryBox = document.getElementById("listSummary");
+const viewToggleBtn = document.getElementById("viewToggleBtn");
+let viewMode = "cards";
+
+function renderSummary(list) {
+  if (list.length === 0) {
+    summaryBox.style.display = "none";
+    return;
+  }
+  summaryBox.style.display = "flex";
+  let tDep = 0, tWd = 0, tBal = 0, tProfit = 0;
+  list.forEach(u => {
+    const info = calculateDetailedBalance(u);
+    tDep += info.totalDeposit;
+    tWd += info.totalWithdraw;
+    tBal += info.balance;
+    tProfit += info.profit;
+  });
+  summaryBox.innerHTML =
+    '<span>👥 <strong>' + list.length + '</strong> کاربر</span>' +
+    '<span>➕ واریز: <strong>' + fmt(tDep) + '</strong> گرم</span>' +
+    '<span>📤 برداشت: <strong>' + fmt(tWd) + '</strong> گرم</span>' +
+    '<span>💰 موجودی: <strong>' + fmt(tBal) + '</strong> گرم</span>' +
+    '<span>📈 سود: <strong>' + fmt(tProfit > 0 ? tProfit : 0) + '</strong> گرم</span>';
+}
+
+function renderList() {
+  const list = getFilteredList();
+  renderSummary(list);
+
+  if (list.length === 0) {
+    container.innerHTML = '<div class="empty"><div class="icon">🪙</div><div>' +
+      (currentFilter ? "نتیجه‌ای پیدا نشد" : "هنوز کاربری ثبت نشده است") + '</div></div>';
+    return;
+  }
+  if (viewMode === "table") {
+    container.innerHTML = renderTable(list);
+  } else {
+    container.innerHTML = '<div class="deposits-grid">' + list.map(cardHTML).join("") + '</div>';
+  }
+}
+
+function cardHTML(u) {
+  const info = calculateDetailedBalance(u);
+  const days = calcDaysActive(u);
+  const txs = (u.transactions || []).slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  let historyHtml = "";
+  if (txs.length) {
+    historyHtml = '<div class="history"><div class="history-title">📊 تراکنش‌ها</div>' +
+      txs.map(t => {
+        const isDep = t.type === "deposit";
+        return '<div class="history-item">' +
+          '<div class="history-left">' +
+            '<span class="tx-type ' + (isDep ? "deposit" : "withdraw") + '">' + (isDep ? "واریز" : "برداشت") + '</span>' +
+            '<span class="tx-amount ' + (isDep ? "deposit" : "withdraw") + '">' + (isDep ? "+" : "-") + fmt(t.amount) + ' گرم</span>' +
+          '</div>' +
+          '<span class="tx-date">' + fmtDate(t.date) + '</span>' +
+        '</div>';
+      }).join("") + '</div>';
+  }
+
+  return '<div class="deposit-card">' +
+    '<div class="deposit-head">' +
+      '<div>' +
+        '<div class="deposit-name">' + escapeHtml(u.name) + '</div>' +
+        '<div class="deposit-phone">' + escapeHtml(u.phone || "—") + '</div>' +
+      '</div>' +
+      '<div class="card-chips"><span class="chip days">⏱ ' + days + ' روز</span></div>' +
+    '</div>' +
+    '<div class="stats">' +
+      '<div class="stat"><div class="stat-label">موجودی فعلی</div><div class="stat-value accent">' + fmt(info.balance) + '</div></div>' +
+      '<div class="stat"><div class="stat-label">سود</div><div class="stat-value success">' + fmt(info.profit) + '</div></div>' +
+      '<div class="stat"><div class="stat-label">واریز</div><div class="stat-value">' + fmt(info.totalDeposit) + '</div></div>' +
+      '<div class="stat"><div class="stat-label">برداشت</div><div class="stat-value gold">' + fmt(info.totalWithdraw) + '</div></div>' +
+    '</div>' +
+    '<div class="card-actions">' +
+      '<button class="btn-gold btn-sm" data-action="addDeposit" data-id="' + u.id + '">➕ واریز</button>' +
+      '<button class="btn-gold btn-sm" data-action="withdraw" data-id="' + u.id + '">📤 برداشت</button>' +
+      '<span class="spacer"></span>' +
+      '<button class="btn-icon edit" data-action="edit" data-id="' + u.id + '" title="ویرایش">✏️</button>' +
+      '<button class="btn-icon del" data-action="delete" data-id="' + u.id + '" title="حذف">🗑</button>' +
+    '</div>' + historyHtml +
+  '</div>';
+}
+
+function renderTable(list) {
+  let html = '<table class="table-view"><thead><tr>' +
+    '<th>#</th><th>نام</th><th>شماره</th><th>روز</th>' +
+    '<th>واریز</th><th>برداشت</th><th>موجودی</th><th>سود</th><th></th>' +
+    '</tr></thead><tbody>';
+
+  list.forEach((u, i) => {
+    const info = calculateDetailedBalance(u);
+    const days = calcDaysActive(u);
+
+    html += '<tr>' +
+      '<td data-label="#" class="num">' + (i + 1) + '</td>' +
+      '<td data-label="نام" class="name-cell">' + escapeHtml(u.name) + '</td>' +
+      '<td data-label="شماره" class="phone-cell">' + escapeHtml(u.phone || "—") + '</td>' +
+      '<td data-label="روز" class="num">' + days + '</td>' +
+      '<td data-label="واریز" class="num">' + fmt(info.totalDeposit) + '</td>' +
+      '<td data-label="برداشت" class="num">' + fmt(info.totalWithdraw) + '</td>' +
+      '<td data-label="موجودی" class="num balance-cell">' + fmt(info.balance) + '</td>' +
+      '<td data-label="سود" class="num profit-cell">' + fmt(info.profit > 0 ? info.profit : 0) + '</td>' +
+      '<td data-label="عملیات"><div class="row-actions">' +
+        '<button class="btn-icon edit" data-action="edit" data-id="' + u.id + '">✏️</button>' +
+        '<button class="btn-icon del" data-action="delete" data-id="' + u.id + '">🗑</button>' +
+      '</div></td></tr>';
+  });
+  html += '</tbody></table>';
+  return html;
+}
+
+/* ============================================================
+   6) ثبت واریز
+   ============================================================ */
+document.getElementById("depositForm").addEventListener("submit", function (e) {
+  e.preventDefault();
+  const nameEl = document.getElementById("inpName");
+  const phoneEl = document.getElementById("inpPhone");
+  const weightEl = document.getElementById("inpWeight");
+  const dateEl = document.getElementById("inpDate");
+  const name = nameEl.value.trim();
+  const phone = phoneEl.value.trim();
+  const amount = parseFloat(weightEl.value);
+  const date = dateEl.value;
+
+  if (!name) { showAlarm({ icon: "⚠️", iconClass: "danger", title: "نام را وارد کنید" }); nameEl.focus(); return; }
+  if (!amount || amount <= 0 || isNaN(amount)) { showAlarm({ icon: "⚠️", iconClass: "danger", title: "وزن معتبر وارد کنید" }); weightEl.focus(); return; }
+  if (!date) { showAlarm({ icon: "⚠️", iconClass: "danger", title: "تاریخ را انتخاب کنید" }); dateEl.focus(); return; }
+
+  try {
+    const existing = DataStore.findByNameAndPhone(name, phone);
+    let targetUser, isNew;
+
+    if (existing) {
+      DataStore.addTransaction(existing.id, { type: "deposit", amount: amount, date: date });
+      targetUser = DataStore.getAll().find(x => x.id === existing.id);
+      isNew = false;
+    } else {
+      targetUser = DataStore.add({
+        name: name, phone: phone, initialWeight: amount, startDate: date,
+        transactions: [{ type: "deposit", amount: amount, date: date }]
+      });
+      isNew = true;
+    }
+
+    const info = calculateDetailedBalance(targetUser);
+
+    showAlarm({
+      icon: isNew ? "🎉" : "💰",
+      iconClass: "gold",
+      title: isNew ? "کاربر جدید ثبت شد!" : "واریز اضافه شد",
+      subtitle: isNew ? "اطلاعات کامل کاربر جدید:" : "به‌روزرسانی " + targetUser.name,
+      rows: [
+        { lbl: "نام", val: targetUser.name },
+        { lbl: "شماره", val: targetUser.phone || "—" },
+        { lbl: "مقدار واریز", val: fmt(amount) + " گرم", cls: "success" },
+        { lbl: "تاریخ", val: fmtDate(date) },
+        { lbl: "مجموع واریز", val: fmt(info.totalDeposit) + " گرم" },
+        { lbl: "مجموع برداشت", val: fmt(info.totalWithdraw) + " گرم" },
+        { lbl: "سود کسب‌شده", val: fmt(info.profit) + " گرم", cls: "success" },
+        { lbl: "موجودی جدید", val: fmt(info.balance) + " گرم", cls: "accent" }
+      ],
+      timeout: 5500
+    });
+
+    nameEl.value = ""; phoneEl.value = ""; weightEl.value = ""; dateEl.value = todayStr();
+    refreshAll();
+  } catch (err) {
+    console.error(err);
+    showAlarm({ icon: "❌", iconClass: "danger", title: "خطا", subtitle: err.message });
+  }
+});
+
+/* ============================================================
+   7) دکمه‌های کارت / جدول
+   ============================================================ */
+container.addEventListener("click", function (e) {
+  const btn = e.target.closest("button[data-action]");
+  if (!btn) return;
+  const id = btn.getAttribute("data-id");
+  const action = btn.getAttribute("data-action");
+  if (action === "withdraw") openWithdraw(id);
+  else if (action === "edit") openEdit(id);
+  else if (action === "delete") removeDeposit(id);
+  else if (action === "addDeposit") openAddDeposit(id);
+});
+
+/* ============================================================
+   8) واریز / برداشت
+   ============================================================ */
+function openAddDeposit(id) {
+  const u = DataStore.getAll().find(x => x.id === id);
+  if (!u) return;
+  document.getElementById("withdrawId").value = id;
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawAmount").placeholder = "مثلاً 5";
+  document.getElementById("withdrawDate").value = todayStr();
+  document.getElementById("txModalTitle").textContent = "➕ ثبت واریز برای " + u.name;
+  document.getElementById("withdrawSubmit").textContent = "ثبت واریز";
+  document.getElementById("withdrawSubmit").dataset.mode = "deposit";
+  openModal("withdrawModal");
+}
+
+function openWithdraw(id) {
+  const u = DataStore.getAll().find(x => x.id === id);
+  if (!u) return;
+  const remaining = calculateBalance(u);
+  document.getElementById("withdrawId").value = id;
+  document.getElementById("withdrawAmount").value = "";
+  document.getElementById("withdrawAmount").placeholder = "حداکثر " + fmt(remaining) + " گرم";
+  document.getElementById("withdrawDate").value = todayStr();
+  document.getElementById("txModalTitle").textContent = "📤 ثبت برداشت";
+  document.getElementById("withdrawSubmit").textContent = "ثبت برداشت";
+  document.getElementById("withdrawSubmit").dataset.mode = "withdraw";
+  openModal("withdrawModal");
+}
+
+document.getElementById("withdrawSubmit").addEventListener("click", function () {
+  const mode = this.dataset.mode || "withdraw";
+  const id = document.getElementById("withdrawId").value;
+  const amount = parseFloat(document.getElementById("withdrawAmount").value);
+  const date = document.getElementById("withdrawDate").value;
+  if (!amount || amount <= 0 || isNaN(amount)) { showAlarm({ icon: "⚠️", iconClass: "danger", title: "مقدار معتبر وارد کنید" }); return; }
+  if (!date) { showAlarm({ icon: "⚠️", iconClass: "danger", title: "تاریخ را انتخاب کنید" }); return; }
+  const u = DataStore.getAll().find(x => x.id === id);
+  if (!u) { showAlarm({ icon: "❌", iconClass: "danger", title: "کاربر پیدا نشد" }); return; }
+  if (mode === "withdraw") {
+    const remaining = calculateBalance(u);
+    if (amount > remaining + 1e-9) {
+      showAlarm({ icon: "⚠️", iconClass: "danger", title: "موجودی کافی نیست", subtitle: "حداکثر: " + fmt(remaining) + " گرم" });
+      return;
+    }
+    DataStore.addTransaction(id, { type: "withdraw", amount: amount, date: date });
+    const updated = DataStore.getAll().find(x => x.id === id);
+    const info = calculateDetailedBalance(updated);
+    showAlarm({
+      icon: "📤", iconClass: "gold",
+      title: "برداشت ثبت شد",
+      subtitle: "از حساب " + updated.name,
+      rows: [
+        { lbl: "مقدار", val: fmt(amount) + " گرم" },
+        { lbl: "تاریخ", val: fmtDate(date) },
+        { lbl: "موجودی جدید", val: fmt(info.balance) + " گرم", cls: "accent" }
+      ]
+    });
+  } else {
+    DataStore.addTransaction(id, { type: "deposit", amount: amount, date: date });
+    const updated = DataStore.getAll().find(x => x.id === id);
+    const info = calculateDetailedBalance(updated);
+    showAlarm({
+      icon: "💰", iconClass: "gold",
+      title: "واریز ثبت شد",
+      subtitle: "به حساب " + updated.name,
+      rows: [
+        { lbl: "مقدار", val: fmt(amount) + " گرم", cls: "success" },
+        { lbl: "تاریخ", val: fmtDate(date) },
+        { lbl: "موجودی جدید", val: fmt(info.balance) + " گرم", cls: "accent" }
+      ]
+    });
+  }
+  closeModal("withdrawModal");
+  refreshAll();
+});
+
+/* ============================================================
+   9) مودال اطلاعات واریز
+   ============================================================ */
+function openInfo(id) {
+  const u = DataStore.getAll().find(x => x.id === id);
+  if (!u) return;
+
+  document.getElementById("infoUserId").value = id;
+
+  const info = calculateDetailedBalance(u);
+  const days = calcDaysActive(u);
+  const txs = (u.transactions || []).slice().sort((a, b) => new Date(b.date) - new Date(a.date));
+
+  let historyHtml = "";
+  if (txs.length) {
+    historyHtml = '<div class="history"><div class="history-title">📊 تراکنش‌ها</div>' +
+      txs.map(t => {
+        const isDep = t.type === "deposit";
+        return '<div class="history-item">' +
+          '<div class="history-left">' +
+            '<span class="tx-type ' + (isDep ? "deposit" : "withdraw") + '">' + (isDep ? "واریز" : "برداشت") + '</span>' +
+            '<span class="tx-amount ' + (isDep ? "deposit" : "withdraw") + '">' + (isDep ? "+" : "-") + fmt(t.amount) + ' گرم</span>' +
+          '</div>' +
+          '<span class="tx-date">' + fmtDate(t.date) + '</span>' +
+        '</div>';
+      }).join("") + '</div>';
+  }
+
+  // جزئیات سود هر واریز
+  let detailsHtml = "";
+  if (info.details.length) {
+    detailsHtml = '<div class="deposit-details">' +
+      '<div class="deposit-details-title">💎 سود هر واریز</div>' +
+      info.details.map(d => {
+        return '<div class="deposit-detail-item">' +
+          '<div>' +
+            '<div class="lbl">' + fmtDate(d.depositDate) + ' — ' + d.daysActive + ' روز</div>' +
+            '<div style="font-size:0.7rem;color:var(--muted);margin-top:1px">اصل: ' + fmt(d.remainingPrincipal) + ' گرم</div>' +
+          '</div>' +
+          '<div style="text-align:left">' +
+            '<div class="val">' + fmt(d.currentValue) + ' گرم</div>' +
+            '<div style="font-size:0.65rem;color:var(--success)">+' + fmt(d.profit) + '</div>' +
+          '</div>' +
+        '</div>';
+      }).join("") +
+    '</div>';
+  }
+
+  document.getElementById("infoContent").innerHTML =
+    '<div class="info-card">' +
+      '<div class="deposit-head">' +
+        '<div>' +
+          '<div class="deposit-name">' + escapeHtml(u.name) + '</div>' +
+          '<div class="deposit-phone">' + escapeHtml(u.phone || "—") + '</div>' +
+        '</div>' +
+        '<div class="card-chips"><span class="chip days">⏱ ' + days + ' روز</span></div>' +
+      '</div>' +
+      '<div class="stats">' +
+        '<div class="stat"><div class="stat-label">موجودی فعلی</div><div class="stat-value accent">' + fmt(info.balance) + '</div></div>' +
+        '<div class="stat"><div class="stat-label">سود</div><div class="stat-value success">' + fmt(info.profit) + '</div></div>' +
+        '<div class="stat"><div class="stat-label">واریز</div><div class="stat-value">' + fmt(info.totalDeposit) + '</div></div>' +
+        '<div class="stat"><div class="stat-label">برداشت</div><div class="stat-value gold">' + fmt(info.totalWithdraw) + '</div></div>' +
+      '</div>' +
+      '<div class="card-actions">' +
+        '<button class="btn-gold btn-sm" id="infoAddDepositBtn">➕ واریز</button>' +
+        '<button class="btn-gold btn-sm" id="infoWithdrawBtn">📤 برداشت</button>' +
+        '<span class="spacer"></span>' +
+        '<button class="btn-icon edit" id="infoEditBtn" title="ویرایش کامل">✏️</button>' +
+        '<button class="btn-icon del" id="infoDeleteBtn" title="حذف">🗑</button>' +
+      '</div>' +
+      detailsHtml +
+      historyHtml +
+    '</div>';
+
+  document.getElementById("infoAddDepositBtn").addEventListener("click", function () {
+    closeModal("infoModal");
+    setTimeout(() => openAddDeposit(id), 150);
+  });
+  document.getElementById("infoWithdrawBtn").addEventListener("click", function () {
+    closeModal("infoModal");
+    setTimeout(() => openWithdraw(id), 150);
+  });
+  document.getElementById("infoEditBtn").addEventListener("click", function () {
+    closeModal("infoModal");
+    setTimeout(() => openEdit(id), 150);
+  });
+  document.getElementById("infoDeleteBtn").addEventListener("click", function () {
+    closeModal("infoModal");
+    setTimeout(() => removeDeposit(id), 150);
+  });
+
+  openModal("infoModal");
+}
+
+/* ============================================================
+   10) ویرایش کامل
+   ============================================================ */
+let editTxs = [];
+
+function openEdit(id) {
+  const u = DataStore.getAll().find(x => x.id === id);
+  if (!u) return;
+  document.getElementById("editId").value = id;
+  document.getElementById("editName").value = u.name || "";
+  document.getElementById("editPhone").value = u.phone || "";
+  editTxs = (u.transactions || []).map(t => ({ type: t.type, amount: Number(t.amount) || 0, date: t.date }));
+  renderEditTxs();
+  updateEditPreview();
+  openModal("editModal");
+}
+
+function renderEditTxs() {
+  const box = document.getElementById("editTxList");
+  if (editTxs.length === 0) {
+    box.innerHTML = '<div class="edit-tx-empty">هیچ تراکنشی ثبت نشده است</div>';
+    return;
+  }
+  const sorted = editTxs.map((t, i) => ({ t, i })).sort((a, b) => new Date(b.t.date) - new Date(a.t.date));
+  box.innerHTML = sorted.map(({ t, i }) =>
+    '<div class="edit-tx-row">' +
+      '<div class="field"><label>نوع</label>' +
+        '<select class="tx-type-select" data-idx="' + i + '">' +
+          '<option value="deposit"' + (t.type === "deposit" ? " selected" : "") + '>واریز</option>' +
+          '<option value="withdraw"' + (t.type === "withdraw" ? " selected" : "") + '>برداشت</option>' +
+        '</select></div>' +
+      '<div class="field"><label>مقدار و تاریخ</label>' +
+        '<div style="display:flex;gap:6px">' +
+          '<input type="number" step="0.001" min="0.001" class="tx-amount-input" data-idx="' + i + '" value="' + t.amount + '" style="flex:1" />' +
+          '<input type="date" class="tx-date-input" data-idx="' + i + '" value="' + t.date + '" style="flex:1.2" />' +
+        '</div></div>' +
+      '<button type="button" class="btn-icon del tx-remove" data-idx="' + i + '">🗑</button>' +
+    '</div>'
+  ).join("");
+
+  box.querySelectorAll(".tx-type-select").forEach(el => el.addEventListener("change", function () {
+    editTxs[+this.dataset.idx].type = this.value; updateEditPreview();
+  }));
+  box.querySelectorAll(".tx-amount-input").forEach(el => el.addEventListener("input", function () {
+    editTxs[+this.dataset.idx].amount = parseFloat(this.value) || 0; updateEditPreview();
+  }));
+  box.querySelectorAll(".tx-date-input").forEach(el => el.addEventListener("input", function () {
+    editTxs[+this.dataset.idx].date = this.value; updateEditPreview();
+  }));
+  box.querySelectorAll(".tx-remove").forEach(el => el.addEventListener("click", function () {
+    editTxs.splice(+this.dataset.idx, 1); renderEditTxs(); updateEditPreview();
+  }));
+}
+
+document.getElementById("addTxBtn").addEventListener("click", function () {
+  editTxs.push({ type: "deposit", amount: 0, date: todayStr() });
+  renderEditTxs();
+  updateEditPreview();
+});
+
+function updateEditPreview() {
+  const fake = { transactions: editTxs.filter(t => t.amount > 0 && t.date) };
+  const info = calculateDetailedBalance(fake);
+  document.getElementById("editPreview").textContent = fmt(info.balance) + " گرم";
+}
+
+document.getElementById("editSubmit").addEventListener("click", function () {
+  const id = document.getElementById("editId").value;
+  const name = document.getElementById("editName").value.trim();
+  const phone = document.getElementById("editPhone").value.trim();
+  if (!name) { showAlarm({ icon: "⚠️", iconClass: "danger", title: "نام را وارد کنید" }); return; }
+  const cleanTxs = [];
+  for (let t of editTxs) {
+    if (!t.amount || t.amount <= 0 || isNaN(t.amount)) { showAlarm({ icon: "⚠️", iconClass: "danger", title: "مقدار تراکنش نامعتبر" }); return; }
+    if (!t.date) { showAlarm({ icon: "⚠️", iconClass: "danger", title: "تاریخ تراکنش خالی" }); return; }
+    cleanTxs.push({ type: t.type, amount: t.amount, date: t.date });
+  }
+  cleanTxs.sort((a, b) => new Date(a.date) - new Date(b.date));
+  DataStore.update(id, {
+    name, phone, transactions: cleanTxs,
+    initialWeight: cleanTxs.length ? (cleanTxs[0].type === "deposit" ? cleanTxs[0].amount : 0) : 0,
+    startDate: cleanTxs.length ? cleanTxs[0].date : todayStr()
+  });
+  closeModal("editModal");
+  refreshAll();
+  showAlarm({ icon: "✅", title: "تغییرات ذخیره شد", subtitle: name + " به‌روزرسانی شد" });
+});
+
+/* ============================================================
+   11) حذف
+   ============================================================ */
+function removeDeposit(id) {
+  const u = DataStore.getAll().find(x => x.id === id);
+  if (!u) return;
+  if (!confirm("حذف «" + u.name + "» ؟")) return;
+  DataStore.remove(id);
+  refreshAll();
+  showAlarm({ icon: "🗑", iconClass: "danger", title: "کاربر حذف شد", subtitle: u.name + " پاک شد" });
+}
+
+document.getElementById("clearAllBtn").addEventListener("click", function () {
+  if (!confirm("همه کاربران حذف شوند؟ این عمل قابل بازگشت نیست.")) return;
+  DataStore.clear();
+  refreshAll();
+  showAlarm({ icon: "🗑", iconClass: "danger", title: "همه داده‌ها پاک شد" });
+});
+
+/* ============================================================
+   12) جستجو / نما / چاپ
+   ============================================================ */
+searchToggleBtn.addEventListener("click", function () {
+  const isOpen = searchBox.style.display !== "none";
+  if (isOpen) {
+    closeSearch();
+  } else {
+    searchBox.style.display = "block";
+    searchInput.focus();
+    searchToggleBtn.textContent = "✖ بستن جستجو";
+  }
+});
+
+searchClearBtn.addEventListener("click", function () {
+  searchInput.value = "";
+  currentFilter = "";
+  refreshAll();
+  searchInput.focus();
+});
+
+searchInput.addEventListener("input", function (e) {
+  currentFilter = e.target.value;
+  refreshAll();
+});
+
+function closeSearch() {
+  searchBox.style.display = "none";
+  searchInput.value = "";
+  currentFilter = "";
+  searchToggleBtn.textContent = "🔍 جستجو";
+  refreshAll();
+}
+
+viewToggleBtn.addEventListener("click", function () {
+  viewMode = viewMode === "cards" ? "table" : "cards";
+  viewToggleBtn.textContent = viewMode === "cards" ? "📋 نمای جدول" : "🗂 نمای کارت";
+  renderList();
+});
+
+printBtn.addEventListener("click", function () {
+  const list = getFilteredList();
+  if (list.length === 0) {
+    showAlarm({ icon: "⚠️", iconClass: "danger", title: "داده‌ای برای چاپ وجود ندارد" });
+    return;
+  }
+  setTimeout(() => window.print(), 100);
+});
+
+/* ============================================================
+   13) سیستم بکاپ و بازیابی
+   ============================================================ */
+const BACKUP_KEY = "goldDeposits_backups_v1";
+const AUTO_BACKUP_LIMIT = 3;
+
+const backupBtn = document.getElementById("backupBtn");
+const restoreBtn = document.getElementById("restoreBtn");
+const restoreFile = document.getElementById("restoreFile");
+const downloadBackupBtn = document.getElementById("downloadBackupBtn");
+const uploadBackupBtn = document.getElementById("uploadBackupBtn");
+const autoBackupList = document.getElementById("autoBackupList");
+
+function saveAutoBackup() {
+  const data = DataStore.getAll();
+  if (data.length === 0) return;
+
+  let backups;
+  try {
+    backups = JSON.parse(localStorage.getItem(BACKUP_KEY)) || [];
+  } catch (e) { backups = []; }
+
+  if (backups.length && JSON.stringify(backups[0].data) === JSON.stringify(data)) {
+    return;
+  }
+
+  backups.unshift({
+    timestamp: Date.now(),
+    count: data.length,
+    data: data
+  });
+
+  if (backups.length > AUTO_BACKUP_LIMIT) {
+    backups = backups.slice(0, AUTO_BACKUP_LIMIT);
+  }
+
+  try {
+    localStorage.setItem(BACKUP_KEY, JSON.stringify(backups));
+  } catch (e) {
+    console.warn("ذخیره بکاپ خودکار ناموفق:", e);
+  }
+}
+
+function downloadBackup() {
+  const data = DataStore.getAll();
+  if (data.length === 0) {
+    showAlarm({ icon: "⚠️", iconClass: "danger", title: "داده‌ای برای بکاپ وجود ندارد" });
+    return;
+  }
+
+  const backup = {
+    app: "Gold Deposit",
+    version: 1,
+    exportedAt: new Date().toISOString(),
+    count: data.length,
+    data: data
+  };
+
+  const blob = new Blob([JSON.stringify(backup, null, 2)], { type: "application/json" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  const d = new Date();
+  const filename = "gold-deposit-backup-" +
+    d.getFullYear() + "-" +
+    String(d.getMonth() + 1).padStart(2, "0") + "-" +
+    String(d.getDate()).padStart(2, "0") + "-" +
+    String(d.getHours()).padStart(2, "0") + String(d.getMinutes()).padStart(2, "0") +
+    ".json";
+
+  a.href = url;
+  a.download = filename;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  setTimeout(() => URL.revokeObjectURL(url), 1000);
+
+  showAlarm({
+    icon: "💾", iconClass: "gold",
+    title: "بکاپ دانلود شد",
+    subtitle: filename,
+    rows: [
+      { lbl: "تعداد کاربران", val: data.length.toLocaleString("fa-IR") },
+      { lbl: "حجم تقریبی", val: (blob.size / 1024).toFixed(1) + " کیلوبایت" }
+    ]
+  });
+}
+
+function handleRestoreFile(file) {
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = function (e) {
+    try {
+      const parsed = JSON.parse(e.target.result);
+      let data = null;
+
+      if (parsed && Array.isArray(parsed.data)) {
+        data = parsed.data;
+      } else if (Array.isArray(parsed)) {
+        data = parsed;
+      }
+
+      if (!data) {
+        showAlarm({ icon: "❌", iconClass: "danger", title: "فایل بکاپ نامعتبر است" });
+        return;
+      }
+
+      if (!confirm("بازیابی " + data.length + " کاربر جایگزین داده‌های فعلی می‌شود. ادامه؟")) {
+        return;
+      }
+
+      saveAutoBackup();
+      localStorage.setItem("goldDeposits_v4", JSON.stringify(data));
+      refreshAll();
+      closeModal("backupModal");
+      showAlarm({
+        icon: "✅", iconClass: "",
+        title: "بازیابی انجام شد",
+        subtitle: data.length + " کاربر بازیابی شدند",
+        rows: [
+          { lbl: "منبع", val: file.name },
+          { lbl: "زمان فایل", val: parsed.exportedAt ? fmtDate(parsed.exportedAt) : "—" }
+        ]
+      });
+    } catch (err) {
+      console.error(err);
+      showAlarm({ icon: "❌", iconClass: "danger", title: "خطا در خواندن فایل", subtitle: err.message });
+    }
+  };
+  reader.readAsText(file);
+}
+
+function renderAutoBackups() {
+  let backups;
+  try {
+    backups = JSON.parse(localStorage.getItem(BACKUP_KEY)) || [];
+  } catch (e) { backups = []; }
+
+  if (backups.length === 0) {
+    autoBackupList.innerHTML = '<div class="auto-backup-empty">هنوز بکاپ خودکاری ثبت نشده است</div>';
+    return;
+  }
+
+  autoBackupList.innerHTML = backups.map((b, i) => {
+    const d = new Date(b.timestamp);
+    const dateStr = d.toLocaleDateString("fa-IR") + " — " +
+      String(d.getHours()).padStart(2, "0") + ":" +
+      String(d.getMinutes()).padStart(2, "0");
+    return '<div class="auto-backup-item">' +
+      '<div class="info">' +
+        '<div class="date">' + dateStr + '</div>' +
+        '<div class="count">' + b.count.toLocaleString("fa-IR") + ' کاربر</div>' +
+      '</div>' +
+      '<div class="actions">' +
+        '<button class="btn-gold btn-sm" data-backup-restore="' + i + '">بازیابی</button>' +
+      '</div>' +
+    '</div>';
+  }).join("");
+
+  autoBackupList.querySelectorAll("[data-backup-restore]").forEach(btn => {
+    btn.addEventListener("click", function () {
+      const idx = parseInt(this.getAttribute("data-backup-restore"));
+      const backup = backups[idx];
+      if (!backup) return;
+      if (!confirm("بازیابی " + backup.count + " کاربر؟ داده‌های فعلی جایگزین می‌شوند.")) return;
+
+      saveAutoBackup();
+      localStorage.setItem("goldDeposits_v4", JSON.stringify(backup.data));
+      refreshAll();
+      closeModal("backupModal");
+      showAlarm({
+        icon: "✅", title: "بازیابی انجام شد",
+        subtitle: backup.count + " کاربر بازگردانی شدند"
+      });
+    });
+  });
+}
+
+backupBtn.addEventListener("click", function () {
+  renderAutoBackups();
+  openModal("backupModal");
+});
+restoreBtn.addEventListener("click", function () {
+  restoreFile.click();
+});
+restoreFile.addEventListener("change", function (e) {
+  if (e.target.files && e.target.files[0]) {
+    handleRestoreFile(e.target.files[0]);
+    e.target.value = "";
+  }
+});
+downloadBackupBtn.addEventListener("click", downloadBackup);
+uploadBackupBtn.addEventListener("click", function () {
+  restoreFile.click();
+});
+document.getElementById("clearBackupsBtn").addEventListener("click", function () {
+  if (!confirm("همه بکاپ‌های خودکار پاک شوند؟")) return;
+  localStorage.removeItem(BACKUP_KEY);
+  renderAutoBackups();
+  showAlarm({ icon: "🗑", iconClass: "danger", title: "بکاپ‌ها پاک شدند", subtitle: "همه بکاپ‌های خودکار حذف شدند" });
+});
+
+/* ============================================================
+   14) Modal / Utils
+   ============================================================ */
+function openModal(id) { document.getElementById(id).classList.add("open"); }
+function closeModal(id) {
+  document.getElementById(id).classList.remove("open");
+  const btn = document.getElementById("withdrawSubmit");
+  if (btn) btn.dataset.mode = "";
+}
+document.querySelectorAll(".modal-overlay").forEach(function (el) {
+  el.addEventListener("click", function (e) {
+    if (e.target === el) closeModal(el.id);
+  });
+});
+
+openListBtn.addEventListener("click", function () {
+  renderList();
+  openModal("listModal");
+});
+
+document.addEventListener("keydown", function (e) {
+  if (e.key === "Escape") {
+    document.querySelectorAll(".modal-overlay.open").forEach(m => closeModal(m.id));
+  }
+});
+
+function refreshAll() {
+  renderSimple();
+  if (document.getElementById("listModal").classList.contains("open")) {
+    renderList();
+  }
+  saveAutoBackup();
+}
+
+function fmt(n) { return Number(n).toLocaleString("fa-IR", { maximumFractionDigits: 3 }); }
+function fmtDate(str) {
+  if (!str) return "—";
+  try { return new Date(str).toLocaleDateString("fa-IR"); }
+  catch (e) { return str; }
+}
+function todayStr() {
+  const d = new Date();
+  const y = d.getFullYear();
+  const m = String(d.getMonth() + 1).padStart(2, "0");
+  const day = String(d.getDate()).padStart(2, "0");
+  return y + "-" + m + "-" + day;
+}
+function escapeHtml(s) {
+  return String(s || "").replace(/[&<>"']/g, function (c) {
+    return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c];
+  });
+}
+
+document.getElementById("inpDate").value = todayStr();
+refreshAll();
+</script>
+</body>
+</html>
+
+
+
