@@ -2229,16 +2229,14 @@ function openInfo(id, skipOpen) {
   }
 }
 
-/* ============================================================
-   چاپ ریز تراکنش‌های یک مشتری
-   ============================================================ */
+
 function printCustomer(id) {
   const u = DataStore.getAll().find(x => x.id === id);
   if (!u) return;
 
   if (!document.getElementById("infoModal").classList.contains("open")) {
     openInfo(id);
-    setTimeout(() => doPrint(), 200);
+    setTimeout(() => doPrint(), 300);
   } else {
     doPrint();
   }
@@ -2249,10 +2247,42 @@ function printCustomer(id) {
       window.print();
       setTimeout(() => {
         document.body.classList.remove("printing-customer");
-      }, 500);
-    }, 100);
+      }, 2000);
+    }, 150);
   }
 }
+
+// ✅ مدیریت خودکار با beforeprint/afterprint
+window.addEventListener("beforeprint", function () {
+  if (document.getElementById("infoModal") &&
+      document.getElementById("infoModal").classList.contains("open")) {
+    document.body.classList.add("printing-customer");
+  }
+});
+window.addEventListener("afterprint", function () {
+  document.body.classList.remove("printing-customer");
+});
+
+// ✅ iOS Safari fallback
+if (window.matchMedia) {
+  const mq = window.matchMedia("print");
+  if (mq.addEventListener) {
+    mq.addEventListener("change", function (e) {
+      if (!e.matches) {
+        document.body.classList.remove("printing-customer");
+      }
+    });
+  } else if (mq.addListener) {
+    // برای مرورگرهای قدیمی
+    mq.addListener(function (e) {
+      if (!e.matches) {
+        document.body.classList.remove("printing-customer");
+      }
+    });
+  }
+}
+
+
 
 /* ============================================================
    8) ویرایش کامل — ✅ parseNumber
