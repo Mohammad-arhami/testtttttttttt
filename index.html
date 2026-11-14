@@ -475,6 +475,7 @@
   }
   .info-actions .spacer { flex: 1; }
 
+  /* ✅ جدول ۴ ستونه با عرض‌های بهتر */
   .tx-table {
     width: 100%;
     border-collapse: collapse;
@@ -488,21 +489,24 @@
   .tx-table thead th {
     background: rgba(245,185,66,0.08);
     color: var(--accent);
-    padding: 8px 6px;
+    padding: 8px 4px;
     text-align: center;
     font-weight: 600;
-    font-size: 0.7rem;
+    font-size: 0.68rem;
     border-bottom: 1px solid var(--border);
     white-space: nowrap;
   }
-  .tx-table thead th.col-date { width: 30%; text-align: center; }
-  .tx-table thead th.col-type { width: 22%; text-align: center; }
+  /* ✅ عرض‌ها بازتنظیم شد — تاریخ بیشتر، خرید/فروش کمتر */
+  .tx-table thead th.col-date { width: 32%; text-align: center; }
+  .tx-table thead th.col-type { width: 24%; text-align: center; }
   .tx-table thead th.col-rate { width: 24%; text-align: center; }
-  .tx-table thead th.col-balance { width: 24%; text-align: center; }
+  .tx-table thead th.col-balance { width: 20%; text-align: center; }
   .tx-table tbody td {
-    padding: 7px 6px;
+    padding: 7px 4px;
     border-bottom: 1px solid var(--border);
     vertical-align: middle;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .tx-table tbody tr:last-child td { border-bottom: none; }
   .tx-table tbody tr:hover td { background: rgba(245,185,66,0.03); }
@@ -514,16 +518,20 @@
     font-variant-numeric: tabular-nums;
     direction: ltr;
     white-space: nowrap;
+    font-size: 0.72rem;
   }
 
   .tx-table .tx-type-cell { text-align: center; }
   .tx-table .tx-type-cell .tx-type-tag {
     display: inline-block;
-    font-size: 0.62rem;
-    padding: 1px 7px;
+    font-size: 0.6rem;
+    padding: 1px 5px;
     border-radius: 10px;
     font-weight: 600;
     white-space: nowrap;
+    max-width: 100%;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
   .tx-table .tx-type-cell .tx-type-tag.buy {
     background: rgba(52,211,153,0.15);
@@ -543,6 +551,10 @@
     color: var(--accent-soft);
     font-variant-numeric: tabular-nums;
     direction: ltr;
+    font-size: 0.7rem;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
   }
   .tx-table .tx-balance-cell {
     text-align: center;
@@ -551,11 +563,12 @@
     font-variant-numeric: tabular-nums;
     direction: ltr;
     white-space: nowrap;
+    font-size: 0.74rem;
   }
   .tx-table .tx-balance-cell small {
     color: var(--muted);
     font-weight: 400;
-    font-size: 0.62rem;
+    font-size: 0.55rem;
   }
   .tx-table-empty {
     text-align: center;
@@ -790,7 +803,8 @@
     .btn-icon { width: 28px; height: 28px; font-size: 0.76rem; }
   }
 
-  @media (max-width: 380px) {
+  /* ✅ ریسپانسیو برای عرض ۴۰۰-۴۸۰px */
+  @media (max-width: 480px) {
     .app { padding: 12px 8px 0; gap: 6px; }
 
     .toolbar {
@@ -849,11 +863,15 @@
     .info-header .info-name { font-size: 0.75rem; }
     .info-header .info-days-badge { font-size: 0.58rem; padding: 1px 6px; }
 
+    /* ✅ فونت جدول کوچیک‌تر تا ستون‌ها روی هم نیفتن */
     .tx-table { font-size: 0.68rem; }
-    .tx-table thead th { padding: 5px 6px; font-size: 0.6rem; }
-    .tx-table tbody td { padding: 5px 6px; }
-    .tx-table .tx-type-cell .tx-type-tag { font-size: 0.55rem; padding: 0 5px; }
-    .tx-table .tx-balance-cell small { font-size: 0.55rem; }
+    .tx-table thead th { padding: 6px 3px; font-size: 0.6rem; }
+    .tx-table tbody td { padding: 6px 3px; }
+    .tx-table .tx-date-cell { font-size: 0.64rem; }
+    .tx-table .tx-type-cell .tx-type-tag { font-size: 0.52rem; padding: 0 4px; }
+    .tx-table .tx-rate-cell { font-size: 0.62rem; }
+    .tx-table .tx-balance-cell { font-size: 0.66rem; }
+    .tx-table .tx-balance-cell small { font-size: 0.5rem; }
 
     .backup-modal { padding: 10px; }
     .backup-modal h3 { font-size: 0.8rem !important; }
@@ -877,7 +895,25 @@
     .date-picker-btn { padding: 8px 10px; font-size: 16px; }
   }
 
-  /* ✅ چاپ لیست اصلی */
+  /* ✅ عرض خیلی کم ۳۸۰ و کمتر */
+  @media (max-width: 380px) {
+    /* ✅ فونت جدول باز هم کوچیک‌تر */
+    .tx-table { font-size: 0.62rem; }
+    .tx-table thead th { padding: 5px 2px; font-size: 0.55rem; }
+    .tx-table tbody td { padding: 5px 2px; }
+    .tx-table .tx-date-cell { font-size: 0.58rem; }
+    .tx-table .tx-type-cell .tx-type-tag { font-size: 0.46rem; padding: 0 3px; border-radius: 6px; }
+    .tx-table .tx-rate-cell { font-size: 0.56rem; }
+    .tx-table .tx-balance-cell { font-size: 0.6rem; }
+    .tx-table .tx-balance-cell small { font-size: 0.44rem; }
+
+    /* عرض‌ها بازتنظیم */
+    .tx-table thead th.col-date { width: 30%; }
+    .tx-table thead th.col-type { width: 26%; }
+    .tx-table thead th.col-rate { width: 24%; }
+    .tx-table thead th.col-balance { width: 20%; }
+  }
+
   @media print {
     html, body { position: static; overflow: visible; height: auto; background: white; color: black; }
     .app { height: auto; max-height: none; padding: 0; overflow: visible; }
@@ -889,7 +925,6 @@
     .simple-table .action-cell { display: none !important; }
   }
 
-  /* ✅ چاپ مودال اطلاعات مشتری */
   body.printing-customer #infoModal {
     position: static !important;
     display: block !important;
@@ -1246,14 +1281,43 @@ const Jalaali = (() => {
   return { toJalaali, toGregorian, isLeapJalaali, jalaaliMonthLength };
 })();
 
+/* ============================================================
+   توابع کمکی عدد و تاریخ
+   ============================================================ */
 function toPersianDigits(s) {
   return String(s).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[+d]);
 }
+
+/* ✅ تبدیل همه ارقام و ممیزهای ممکن به لاتین */
 function toLatinDigits(s) {
-  return String(s || "")
-    .replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d))
-    .replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+  if (s === null || s === undefined) return "";
+  let str = String(s);
+  // ارقام فارسی
+  str = str.replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
+  // ارقام عربی
+  str = str.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
+  // ممیز عربی (٫ U+066B)
+  str = str.replace(/٫/g, ".");
+  // ممیز فارسی (٬ U+066C - هزار جداکننده، ولی اگه اشتباه تایپ شه)
+  str = str.replace(/٬/g, ".");
+  // ممیز عربی دیگر (U+060C کاما عربی)
+  str = str.replace(/،/g, ".");
+  // ممیز فارسی دیگر (U+066B)
+  str = str.replace(/٫/g, ".");
+  // کاراکترهای فاصله‌ای
+  str = str.replace(/[,\s\u00A0\u202F\u2009]/g, "");
+  return str;
 }
+
+/* ✅ پارس امن اعداد — همه فرمت‌ها رو پوشش می‌ده */
+function parseNumber(input) {
+  if (input === null || input === undefined) return NaN;
+  const cleaned = toLatinDigits(String(input));
+  if (!cleaned) return NaN;
+  const num = parseFloat(cleaned);
+  return isNaN(num) ? NaN : num;
+}
+
 function toJalaliString(dateInput) {
   if (!dateInput) return "";
   let d;
@@ -1880,7 +1944,7 @@ simpleList.addEventListener("click", function (e) {
 });
 
 /* ============================================================
-   5) ثبت مشتری
+   5) ثبت مشتری — ✅ parseNumber به جای parseFloat
    ============================================================ */
 addCustomerBtn.addEventListener("click", function () {
   document.getElementById("inpName").value = "";
@@ -1898,8 +1962,9 @@ document.getElementById("depositForm").addEventListener("submit", function (e) {
   const weightEl = document.getElementById("inpWeight");
   const dateISO = document.getElementById("inpDate").value;
   const name = nameEl.value.trim();
-  const rate = parseFloat(toLatinDigits(rateEl.value).replace(/,/g, "")) || 0;
-  const amount = parseFloat(toLatinDigits(weightEl.value).replace(/,/g, ""));
+  // ✅ استفاده از parseNumber
+  const rate = parseNumber(rateEl.value) || 0;
+  const amount = parseNumber(weightEl.value);
 
   if (!name) { alert("نام مشتری را وارد کنید"); nameEl.focus(); return; }
   if (!amount || amount <= 0 || isNaN(amount)) { alert("وزن معتبر وارد کنید"); weightEl.focus(); return; }
@@ -1929,7 +1994,7 @@ document.getElementById("depositForm").addEventListener("submit", function (e) {
 });
 
 /* ============================================================
-   6) خرید / فروش
+   6) خرید / فروش — ✅ parseNumber
    ============================================================ */
 function openAddDeposit(id) {
   const u = DataStore.getAll().find(x => x.id === id);
@@ -1965,8 +2030,9 @@ function openWithdraw(id) {
 document.getElementById("withdrawSubmit").addEventListener("click", function () {
   const mode = this.dataset.mode || "withdraw";
   const id = document.getElementById("withdrawId").value;
-  const amount = parseFloat(toLatinDigits(document.getElementById("withdrawAmount").value).replace(/,/g, ""));
-  const rate = parseFloat(toLatinDigits(document.getElementById("withdrawRate").value).replace(/,/g, "")) || 0;
+  // ✅ استفاده از parseNumber
+  const amount = parseNumber(document.getElementById("withdrawAmount").value);
+  const rate = parseNumber(document.getElementById("withdrawRate").value) || 0;
   const dateISO = document.getElementById("withdrawDate").value;
 
   if (!amount || amount <= 0 || isNaN(amount)) { alert("مقدار معتبر وارد کنید"); return; }
@@ -2031,7 +2097,6 @@ function openInfo(id, skipOpen) {
   if (full.history.length === 0) {
     txTableHtml = '<div class="tx-table-empty">هنوز تراکنشی ثبت نشده است</div>';
   } else {
-    // ✅ از قدیم به جدید (خرید اولیه اول، ماه آخر آخر)
     const sortedHistory = full.history;
 
     txTableHtml =
@@ -2119,13 +2184,12 @@ function openInfo(id, skipOpen) {
 }
 
 /* ============================================================
-   ✅ چاپ ریز تراکنش‌های یک مشتری
+   چاپ ریز تراکنش‌های یک مشتری
    ============================================================ */
 function printCustomer(id) {
   const u = DataStore.getAll().find(x => x.id === id);
   if (!u) return;
 
-  // باید مودال اطلاعات باز باشه
   if (!document.getElementById("infoModal").classList.contains("open")) {
     openInfo(id);
     setTimeout(() => doPrint(), 200);
@@ -2145,7 +2209,7 @@ function printCustomer(id) {
 }
 
 /* ============================================================
-   8) ویرایش کامل
+   8) ویرایش کامل — ✅ parseNumber
    ============================================================ */
 let editTxs = [];
 
@@ -2197,11 +2261,13 @@ function renderEditTxs() {
     editTxs[+this.dataset.idx].type = this.value; updateEditPreview();
   }));
   box.querySelectorAll(".tx-amount-input").forEach(el => el.addEventListener("input", function () {
-    editTxs[+this.dataset.idx].amount = parseFloat(toLatinDigits(this.value).replace(/,/g, "")) || 0;
+    // ✅ استفاده از parseNumber
+    editTxs[+this.dataset.idx].amount = parseNumber(this.value) || 0;
     updateEditPreview();
   }));
   box.querySelectorAll(".tx-rate-input").forEach(el => el.addEventListener("input", function () {
-    editTxs[+this.dataset.idx].rate = parseFloat(toLatinDigits(this.value).replace(/,/g, "")) || 0;
+    // ✅ استفاده از parseNumber
+    editTxs[+this.dataset.idx].rate = parseNumber(this.value) || 0;
   }));
   box.querySelectorAll(".tx-remove").forEach(el => el.addEventListener("click", function () {
     editTxs.splice(+this.dataset.idx, 1); renderEditTxs(); updateEditPreview();
@@ -2251,7 +2317,8 @@ function updateEditPreview() {
 document.getElementById("editSubmit").addEventListener("click", function () {
   const id = document.getElementById("editId").value;
   const name = document.getElementById("editName").value.trim();
-  const rate = parseFloat(toLatinDigits(document.getElementById("editRate").value).replace(/,/g, "")) || 0;
+  // ✅ استفاده از parseNumber
+  const rate = parseNumber(document.getElementById("editRate").value) || 0;
   if (!name) { alert("نام مشتری را وارد کنید"); return; }
 
   const cleanTxs = [];
