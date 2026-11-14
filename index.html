@@ -1288,33 +1288,79 @@ function toPersianDigits(s) {
   return String(s).replace(/\d/g, d => "۰۱۲۳۴۵۶۷۸۹"[+d]);
 }
 
-/* ✅ تبدیل همه ارقام و ممیزهای ممکن به لاتین */
+
+/* ✅ تبدیل همه ارقام و هر کاراکتر بین اعداد به اعشار */
 function toLatinDigits(s) {
   if (s === null || s === undefined) return "";
   let str = String(s);
-  // ارقام فارسی
+
+  // ۱. تبدیل ارقام فارسی به لاتین
   str = str.replace(/[۰-۹]/g, d => "۰۱۲۳۴۵۶۷۸۹".indexOf(d));
-  // ارقام عربی
+  // ۲. تبدیل ارقام عربی به لاتین
   str = str.replace(/[٠-٩]/g, d => "٠١٢٣٤٥٦٧٨٩".indexOf(d));
-  // ممیز عربی (٫ U+066B)
-  str = str.replace(/٫/g, ".");
-  // ممیز فارسی (٬ U+066C - هزار جداکننده، ولی اگه اشتباه تایپ شه)
-  str = str.replace(/٬/g, ".");
-  // ممیز عربی دیگر (U+060C کاما عربی)
-  str = str.replace(/،/g, ".");
-  // ممیز فارسی دیگر (U+066B)
-  str = str.replace(/٫/g, ".");
-  // کاراکترهای فاصله‌ای
-  str = str.replace(/[,\s\u00A0\u202F\u2009]/g, "");
+
+  // ۳. ✅ حذف کاراکترهای اضافی (متن، علامت، غیره) — فقط ارقام و جداکننده‌ها بمونن
+  //    هر کاراکتری که رقم نیست و جزو جداکننده‌ها هم نیست، حذف شه
+  //    ولی جداکننده‌های ممکن رو نگه داریم تا مرحله بعد پردازش کنیم
+  str = str.replace(/[^0-9,.\u066B\u066C\u060C\u00B7\u2022\u00A0\u202F\u2009\s\-]/g, "");
+
+  // ۴. ✅ قانون طلایی: هر کاراکتر غیر رقمی که بین دو رقم باشه → نقطه اعشار
+  //    اول همه جداکننده‌های ممکن رو به یه علامت موقت تبدیل کن
+  //    بعد هر توالی از این علامت‌ها رو به یه نقطه تبدیل کن
+  str = str.replace(/[,\u066B\u066C\u060C\u00B7\u2022]/g, ".");
+  //    نقطه‌های اضافی (مثل "0..3") رو یکی کن
+  str = str.replace(/\.+/g, ".");
+  //    نقطه اول یا آخر رو حذف کن (مثل ".3" یا "3.")
+  str = str.replace(/^\./, "0.").replace(/\.$/, "");
+
+  // ۵. ✅ فاصله‌های بین دو رقم هم به عنوان اعشار در نظر گرفته بشن
+  //    (مثلاً "0 3" یعنی "0.3" — چون موبایل فارسی ممکنه نقطه رو به فاصله تبدیل کنه)
+  //    ولی فاصله‌های اطراف رو حذف کن
+  str = str.trim();
+  //    فاصله بین دو رقم → نقطه
+  str = str.replace(/(\d)\s+(\d)/g, "$1.$2");
+
+  // ۶. حذف فاصله‌های باقی‌مونده
+  str = str.replace(/\s+/g, "");
+
+  // ۷. اگه نقطه در ابتدا یا انتها بود، اصلاح کن
+  if (str.startsWith(".")) str = "0" + str;
+  if (str.endsWith(".")) str = str.slice(0, -1);
+
+  // ۸. اگه خالی شد، صفر برگردون
+  if (!str) return "";
+
   return str;
 }
 
-/* ✅ پارس امن اعداد — همه فرمت‌ها رو پوشش می‌ده */
+/* ✅ پارس امن اعداد — حتی اگه چند ممیز یا کاراکتر عجیب باشه */
 function parseNumber(input) {
   if (input === null || input === undefined) return NaN;
-  const cleaned = toLatinDigits(String(input));
-  if (!cleaned) return NaN;
-  const num = parseFloat(cleaned);
+
+  let str = String(input).trim();
+  if (!str) return NaN;
+
+  // مرحله ۱: تبدیل ارقام فارسی/عربی و جداکننده‌ها
+  str = toLatinDigits(str);
+
+  if (!str) return NaN;
+
+  // مرحله ۲: اگه بیشتر از یه نقطه داریم (مثل "0.3.5")، فقط اولی رو نگه دار
+  const firstDot = str.indexOf(".");
+  if (firstDot !== -1) {
+    // قبل از نقطه + نقطه + بقیه (بدون نقطه)
+    const before = str.slice(0, firstDot);
+    const after = str.slice(firstDot + 1).replace(/\./g, "");
+    str = before + "." + after;
+  }
+
+  // مرحله ۳: حذف نقطه‌های اضافی اول/آخر
+  str = str.replace(/^\./, "0.").replace(/\.$/, "");
+
+  // مرحله ۴: اگه خالی شد
+  if (!str) return NaN;
+
+  const num = parseFloat(str);
   return isNaN(num) ? NaN : num;
 }
 
